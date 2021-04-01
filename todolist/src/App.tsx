@@ -8,7 +8,7 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Changed Updated From Home
+          Changed Updated From Windows Computer
         </p>
         <a
           className="App-link"

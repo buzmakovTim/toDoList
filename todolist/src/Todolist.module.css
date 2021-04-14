@@ -1,0 +1,79 @@
+.taskInput {
+  font-size: 1em;
+  padding: 5px;
+  border-radius: 10px;
+  border: 1px solid grey;
+}
+
+.addTaskButton {
+  background-color: rgb(47, 91, 150);
+  color: white;
+  margin-left: 10px;
+  border: 1px solid rgb(125, 145, 137);
+  height: 25px;
+  width: 25px;
+  border-radius: 5px;
+}
+
+.addTaskButton:focus {
+  outline: none;
+}
+
+.addTaskButton:active {
+  border: 1px solid rgb(121, 121, 121);
+  color: rgb(62, 117, 62);
+}
+
+ul {
+  padding-left: 0;
+  list-style-type: none;
+}
+
+button {
+  background-color: rgb(47, 91, 150);
+  color: white;
+  /* padding: 7px; */
+  margin-left: 5px;
+  border-radius: 10px;
+  border: 1px solid rgba(10, 66, 250, 0.171);
+}
+button:focus {
+  outline: none;
+}
+button:active {
+  color: brown;
+}
+
+.taskLine {
+  margin-bottom: 10px;
+  display: flex;
+  width: 100%;
+  align-content: space-between;
+}
+
+.buttonRemoveTask {
+  margin: 0 0 0 auto;
+}
+
+.buttonRemoveTask button {
+  margin-right: 5px;
+  background-color: rgb(134, 96, 96);
+  border: 1px solid grey;
+  color: white;
+  width: 15px;
+  height: 15px;
+  text-align: center;
+  font-size: 0.1em;
+  padding: 0;
+  border-radius: 5px;
+}
+
+.buttonRemoveTask button:active {
+  background-color: rgb(216, 113, 113);
+  border: 1px solid grey;
+  color: rgb(73, 73, 73);
+}
+
+.buttonRemoveTask button:focus {
+  outline: none;
+}

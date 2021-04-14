@@ -1,3 +1,7 @@
+html {
+  background-color: rgb(78, 112, 141);
+}
+
 .App {
   padding: 30px;
   display: flex;

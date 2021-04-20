@@ -10,3 +10,17 @@ html {
 .App > div {
   margin-right: 50px;
 }
+.isDone {
+  opacity: 0.5;
+}
+.activeFilter {
+  background-color: rgb(101, 129, 255);
+}
+
+.error {
+  border: red 1px solid;
+}
+
+.error-message {
+  color: red; 
+}

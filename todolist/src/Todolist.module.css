@@ -1,8 +1,12 @@
 .taskInput {
   font-size: 1em;
-  padding: 5px;
+  padding: 10px;
   border-radius: 10px;
   border: 1px solid grey;
+}
+
+.taskInput:focus {
+  outline: none;
 }
 
 .addTaskButton {
@@ -76,4 +80,12 @@ button:active {
 
 .buttonRemoveTask button:focus {
   outline: none;
+}
+
+.error {
+  border: red 1px solid;
+}
+
+.errorMessage {
+  color: rgb(143, 38, 38); 
 }

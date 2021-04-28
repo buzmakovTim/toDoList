@@ -1,4 +1,5 @@
 import React, { useState, KeyboardEvent } from 'react';
+import { v1 } from 'uuid';
 import { FilterValueType } from './App';
 import c from './Todolist.module.css';
 
@@ -9,13 +10,15 @@ export type TaskType = {
 };
 
 type PropsTypeTodolist = {
+  id: string; 
   title: string;
   filter: FilterValueType;
   tasks: Array<TaskType>;
-  addTask: (title: string) => void;
-  removeTask: (id: string) => void;
-  changeFilter: (value: FilterValueType) => void;
-  changeStatus: (taskId: string, isDone: boolean) => void;
+  addTask: (title: string, todoListId: string) => void;
+  removeTask: (id: string, todoListId: string) => void;
+  changeFilter: (value: FilterValueType, todoListId: string) => void;
+  changeStatus: (taskId: string, isDone: boolean, todoListId: string) => void;
+  removeTodoList: (id: string) => void;
 };
 
 export function Todolist(props: PropsTypeTodolist) {
@@ -26,7 +29,7 @@ export function Todolist(props: PropsTypeTodolist) {
   const addTaskOnClick = () => {
 
     if(title.trim() !== "" ) {
-      props.addTask(title.trim());
+      props.addTask(title.trim(), props.id);
       setTitle('');
     } else {
       setError("Title is required!");
@@ -42,20 +45,23 @@ export function Todolist(props: PropsTypeTodolist) {
 
   // Filter functions
   const showAll = () => {
-    props.changeFilter('all');
+    props.changeFilter('all', props.id);
   };
   const showActive = () => {
-    props.changeFilter('active');
+    props.changeFilter('active', props.id);
   };
   const showCompleted = () => {
-    props.changeFilter('completed');
+    props.changeFilter('completed', props.id);
   };
 
+  const removeTodoList = () => {
+    props.removeTodoList(props.id);
+  }
   //const onChangeHandler = () => {props.changeStatus()};
 
   return (
     <div>
-      <h3>{props.title}</h3>
+      <h3>{props.title} <button onClick={removeTodoList}>X</button></h3>
 
       <div>
         <input
@@ -74,13 +80,13 @@ export function Todolist(props: PropsTypeTodolist) {
           <li className={t.isDone ? "isDone" : ""}>
             <div className={c.taskLine}>
               <div>
-                <input onChange={ () => {props.changeStatus(t.id, !t.isDone)}} type="checkbox" checked={t.isDone} />
+                <input onChange={ () => {props.changeStatus(t.id, !t.isDone, props.id)}} type="checkbox" checked={t.isDone} />
                 <span>{t.title}</span>
               </div>
               <div className={c.buttonRemoveTask}>
                 <button
                   onClick={() => {
-                    props.removeTask(t.id);
+                    props.removeTask(t.id, t.id);
                   }}
                 >
                   X

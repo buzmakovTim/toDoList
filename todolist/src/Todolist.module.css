@@ -1,91 +1,134 @@
 .taskInput {
-  font-size: 1em;
-  padding: 10px;
-  border-radius: 10px;
-  border: 1px solid grey;
+    width: 200px;
+    font-size: 1em;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid rgba(128, 128, 128, 0.384);
+}
+
+.todolistContainer {
+    max-width: 300px;
+    position: relative;
+    padding: 15px;
+    margin: 20px;
+    border: 1px solid rgb(71, 71, 71);
+    border-radius: 5px;
+    background-color: rgb(247, 247, 247);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.title {
+    color: rgb(94, 94, 94);
+    margin-bottom: 5px;
+    /* border-bottom: 1px rgba(173, 173, 173, 0.473) solid; */
+}
+.titleDiv {
+    color: rgb(94, 94, 94);
+    margin-bottom: 15px;
+    border-bottom: 1px rgba(173, 173, 173, 0.473) solid;
 }
 
 .taskInput:focus {
-  outline: none;
+    outline: none;
 }
 
 .addTaskButton {
-  background-color: rgb(47, 91, 150);
-  color: white;
-  margin-left: 10px;
-  border: 1px solid rgb(125, 145, 137);
-  height: 25px;
-  width: 25px;
-  border-radius: 5px;
+    background-color: rgb(47, 91, 150);
+    color: white;
+    margin-left: 10px;
+    border: 1px solid rgb(125, 145, 137);
+    height: 25px;
+    width: 25px;
+    border-radius: 5px;
 }
 
 .addTaskButton:focus {
-  outline: none;
+    outline: none;
 }
 
 .addTaskButton:active {
-  border: 1px solid rgb(121, 121, 121);
-  color: rgb(62, 117, 62);
+    border: 1px solid rgb(121, 121, 121);
+    color: rgb(62, 117, 62);
 }
 
 ul {
-  padding-left: 0;
-  list-style-type: none;
+    padding-left: 0;
+    list-style-type: none;
 }
 
 button {
-  background-color: rgb(47, 91, 150);
-  color: white;
-  /* padding: 7px; */
-  margin-left: 5px;
-  border-radius: 10px;
-  border: 1px solid rgba(10, 66, 250, 0.171);
+    width: 80px;
+    height: 25px;
+    background-color: rgb(47, 91, 150);
+    color: white;
+    /* padding: 7px; */
+    margin-left: 5px;
+    border-radius: 5px;
+    border: 1px solid rgba(10, 66, 250, 0.171);
 }
 button:focus {
-  outline: none;
+    outline: none;
 }
 button:active {
-  color: brown;
+    color: brown;
+}
+
+h3 {
+    color: rgb(36, 55, 83);
+}
+.ListDeleteButton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    color: grey;
+    border-radius: 3px;
+    border: 1px rgba(138, 138, 138, 0.11) solid;
+    text-align: center;
+    background-color: rgba(128, 128, 128, 0.075);
 }
 
 .taskLine {
-  margin-bottom: 10px;
-  display: flex;
-  width: 100%;
-  align-content: space-between;
+    margin-bottom: 10px;
+    display: flex;
+    width: 100%;
+    align-content: space-between;
 }
 
 .buttonRemoveTask {
-  margin: 0 0 0 auto;
+    margin: 0 0 0 auto;
 }
 
 .buttonRemoveTask button {
-  margin-right: 5px;
-  background-color: rgb(134, 96, 96);
-  border: 1px solid grey;
-  color: white;
-  width: 15px;
-  height: 15px;
-  text-align: center;
-  font-size: 0.1em;
-  padding: 0;
-  border-radius: 5px;
+    margin-right: 5px;
+    background-color: rgba(134, 96, 96, 0.295);
+    border: 1px solid rgba(128, 128, 128, 0.356);
+    color: rgb(48, 48, 48);
+    width: 15px;
+    height: 15px;
+    text-align: center;
+    font-size: 0.1em;
+    padding: 0;
+    border-radius: 5px;
 }
 
 .buttonRemoveTask button:active {
-  background-color: rgb(216, 113, 113);
-  border: 1px solid grey;
-  color: rgb(73, 73, 73);
+    background-color: rgb(216, 113, 113);
+    border: 1px solid grey;
+    color: rgb(73, 73, 73);
 }
 
 .buttonRemoveTask button:focus {
-  outline: none;
+    outline: none;
 }
 
 .error {
-  border: red 1px solid;
+    border: red 1px solid;
 }
 
 .errorMessage {
-  color: rgb(143, 38, 38); 
+    margin-top: 5px;
+    color: rgb(143, 38, 38);
 }

@@ -1,26 +1,40 @@
 html {
-  background-color: rgb(78, 112, 141);
+    background-color: rgb(78, 112, 141);
 }
 
 .App {
-  padding: 30px;
-  display: flex;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
 }
 
-.App > div {
-  margin-right: 50px;
+/* .App > div {
+    margin-right: 50px;
+} */
+
+.Title {
+    margin-bottom: 20px;
+    border-bottom: 1px grey solid;
+    padding-bottom: 40px;
 }
+
+.ToDoLists {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 30px;
+}
+
 .isDone {
-  opacity: 0.5;
+    opacity: 0.5;
 }
 .activeFilter {
-  background-color: rgb(101, 129, 255);
+    background-color: rgb(101, 129, 255);
 }
 
 .error {
-  border: red 1px solid;
+    border: red 1px solid;
 }
 
 .error-message {
-  color: red; 
+    color: red;
 }

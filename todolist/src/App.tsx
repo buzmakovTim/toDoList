@@ -4,6 +4,7 @@ import './App.css';
 import { TaskType, Todolist } from './Todolist';
 import { v1 } from 'uuid';
 import { AddItemForm } from './Components/AddItemForm/AddItemForm';
+import { EditableSpan } from './Components/EditableSpan/EditableSpan';
 
 export type FilterValueType = 'all' | 'completed' | 'active';
 
@@ -20,7 +21,7 @@ function App() {
   let todoListId_1 = v1();
   let todoListId_2 = v1();
 
-  let [todoList, setTodoLists] = useState<Array<TodoListType>> ([
+  let [todoLists, setTodoLists] = useState<Array<TodoListType>> ([
     {id: todoListId_1, title: "What to learn", filter: 'all'},
     {id: todoListId_2, title: "What to buy", filter: 'all'},
   ]);
@@ -47,13 +48,32 @@ function App() {
     }
   }
 
+  function changeTitle(taskId: string, newValue: string, todoListId: string) {
+    let tasks = tasksObj[todoListId];
+    let task = tasks.find(t => t.id === taskId);
+    if(task) {
+      task.title = newValue;
+      
+      setTasks({...tasksObj});
+    }
+  }
+
+  function changeTodoListTitle(todoListId: string, newTitle: string) {
+    let todolistToUpdate = todoLists.find( tl => tl.id === todoListId);
+    if(todolistToUpdate){
+      todolistToUpdate.title = newTitle;
+      setTodoLists([...todoLists]);
+    }
+
+  }
+  
   //let [filter, setFilter] = useState<FilterValueType>('all');
 
   function changeFilter(value: FilterValueType, todoListId: string) {
-    let _todoList = todoList.find(tl => tl.id === todoListId);
+    let _todoList = todoLists.find(tl => tl.id === todoListId);
     if(_todoList) {
       _todoList.filter = value;
-      setTodoLists([...todoList]);
+      setTodoLists([...todoLists]);
     }
     //setFilter(value);
   }
@@ -76,7 +96,7 @@ function App() {
   }
 
   let removeTodoList = (todoListId: string) => {
-    let filteredTodolist = todoList.filter(tl => tl.id !== todoListId)
+    let filteredTodolist = todoLists.filter(tl => tl.id !== todoListId)
     setTodoLists(filteredTodolist);
     delete tasksObj[todoListId];
     setTasks({...tasksObj});
@@ -99,7 +119,7 @@ function App() {
 
       const newTodoListId = v1()
       const newTodoList: TodoListType = {id: newTodoListId, title: title, filter: "all"}
-      setTodoLists([...todoList, newTodoList])
+      setTodoLists([...todoLists, newTodoList])
       setTasks({...tasksObj, [newTodoListId] : []})
   }
 
@@ -108,10 +128,13 @@ function App() {
       
       <div className="Title">
         <h3>Add NEW ToDoList</h3>
+
+        {/* <EditableSpan title={"Add NEW ToDoList"}/>  */}
+        
           <AddItemForm addItem={addToDoList}/>
       </div>
       <div className="ToDoLists">
-          {todoList.map( (td) => {
+          {todoLists.map( (td) => {
 
             let tasksForTodoList = tasksObj[td.id];
             if (td.filter === 'completed') {
@@ -133,6 +156,8 @@ function App() {
                       changeFilter={changeFilter}
                       changeStatus={changeStatus}
                       removeTodoList={removeTodoList}
+                      changeTitle={changeTitle}
+                      changeTodoListTitle={changeTodoListTitle}
                     />
 
             } ) 

@@ -5,6 +5,8 @@ import { FilterValueType } from './App';
 import { AddItemForm } from './Components/AddItemForm/AddItemForm';
 import c from './Todolist.module.css';
 import {EditableSpan} from './Components/EditableSpan/EditableSpan';
+import { IconButton } from '@material-ui/core';
+import { Delete } from '@material-ui/icons';
 
 export type TaskType = {
   id: string;
@@ -77,13 +79,18 @@ export function Todolist(props: PropsTypeTodolist) {
                 <EditableSpan title={t.title} onChangeTitle={onChangeTaskTitleHandler}/>
               </div>
               <div className={c.buttonRemoveTask}>
-                <button
+                {/* <button
                   onClick={() => {
                     props.removeTask(t.id, props.id);
                   }}
                 >
                   X
-                </button>
+                </button> */}
+                <IconButton onClick={() => {
+                    props.removeTask(t.id, props.id);
+                  }}>
+                  <Delete/>
+                </IconButton>
               </div>
             </div>
           </li>

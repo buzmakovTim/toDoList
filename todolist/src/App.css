@@ -2,11 +2,11 @@ html {
     background-color: rgb(78, 112, 141);
 }
 
-.App {
+/* .App {
     padding: 30px;
     display: flex;
     flex-direction: column;
-}
+} */
 
 /* .App > div {
     margin-right: 50px;
@@ -14,8 +14,11 @@ html {
 
 .Title {
     margin-bottom: 20px;
-    border-bottom: 1px grey solid;
+    /* border-bottom: 1px rgb(197, 197, 197) solid; */
     padding-bottom: 40px;
+}
+.Title h3 {
+    color: aliceblue;
 }
 
 .ToDoLists {

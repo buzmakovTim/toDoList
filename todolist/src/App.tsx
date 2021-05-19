@@ -5,10 +5,12 @@ import { TaskType, Todolist } from './Todolist';
 import { v1 } from 'uuid';
 import { AddItemForm } from './Components/AddItemForm/AddItemForm';
 import { EditableSpan } from './Components/EditableSpan/EditableSpan';
+import { AppBar, Button, Grid, IconButton, Toolbar, Typography } from '@material-ui/core';
+import { Menu } from '@material-ui/icons';
 
 export type FilterValueType = 'all' | 'completed' | 'active';
 
-type TodoListType = {
+export type TodoListType = {
   id: string;
   title: string;
   filter: FilterValueType;
@@ -66,8 +68,6 @@ function App() {
     }
 
   }
-  
-  //let [filter, setFilter] = useState<FilterValueType>('all');
 
   function changeFilter(value: FilterValueType, todoListId: string) {
     let _todoList = todoLists.find(tl => tl.id === todoListId);
@@ -77,14 +77,6 @@ function App() {
     }
     //setFilter(value);
   }
-
-  // let tasksForTodoList = tasks;
-  // if (filter === 'completed') {
-  //   tasksForTodoList = tasks.filter((t) => t.isDone === true);
-  // }
-  // if (filter === 'active') {
-  //   tasksForTodoList = tasks.filter((t) => t.isDone === false);
-  // }
 
   function removeTask(id: string, todoListId: string) {
     //alert("Task id: "+ id + " --- TodoList id: " + todoListId)
@@ -112,9 +104,6 @@ function App() {
     setTasks({...tasksObj});
   }
 
-  
-
-  //New Function 
   function addToDoList(title: string) {
 
       const newTodoListId = v1()
@@ -123,50 +112,103 @@ function App() {
       setTasks({...tasksObj, [newTodoListId] : []})
   }
 
-  return (
-    <div className="App">
-      
-      <div className="Title">
-        <h3>Add NEW ToDoList</h3>
 
-        {/* <EditableSpan title={"Add NEW ToDoList"}/>  */}
-        
-          <AddItemForm addItem={addToDoList}/>
-      </div>
-      <div className="ToDoLists">
-          {todoLists.map( (td) => {
+  const todoListsComponents = todoLists.map( (td) => {
 
-            let tasksForTodoList = tasksObj[td.id];
-            if (td.filter === 'completed') {
-              tasksForTodoList = tasksForTodoList.filter((t) => t.isDone === true);
-            }
-            if (td.filter === 'active') {
-              tasksForTodoList = tasksForTodoList.filter((t) => t.isDone === false);
-            }
+    let tasksForTodoList = tasksObj[td.id];
+    if (td.filter === 'completed') {
+      tasksForTodoList = tasksForTodoList.filter((t) => t.isDone === true);
+    }
+    if (td.filter === 'active') {
+      tasksForTodoList = tasksForTodoList.filter((t) => t.isDone === false);
+    }
+    
+    <Todolist
+      key={td.id}
+      id={td.id}
+      title={td.title}
+      filter={td.filter}            
+      tasks={tasksForTodoList}
+      removeTask={removeTask}
+      addTask={addTask}
+      changeFilter={changeFilter}
+      changeStatus={changeStatus}
+      removeTodoList={removeTodoList}
+      changeTitle={changeTitle}
+      changeTodoListTitle={changeTodoListTitle}
+    /> 
+  })
+
+  console.log(todoListsComponents)
+   return ( 
+   <div className="App">
+     
+       <AppBar position={'static'}>
+               <Toolbar style={{justifyContent: 'space-between'}}>
+                   <IconButton color={'inherit'}>
+                       <Menu />
+                   </IconButton>
+                   <Typography variant={'h6'}>
+                     TodoLists
+                   </Typography> 
+                   <Button variant={'outlined'} 
+                             color={'inherit'}>
+                     Login
+                   </Button> 
+               </Toolbar>
+       </AppBar> 
+
+       {/* <div className="Title"> */}
+         {/* <h3>Add NEW ToDoList</h3> */}
+
+         {/* <EditableSpan title={"Add NEW ToDoList"}/>  */}
+
+           <Grid container>
+              <AddItemForm addItem={addToDoList}/>
+              
+           </Grid>
+           <Grid container>
+             
+           </Grid>
+           {todoListsComponents}
+       {/* </div> */}
+       {/* <div className="ToDoLists"> */}
+  </ div> )
+           {/* {todoLists.map( (td) => {
+
+//             let tasksForTodoList = tasksObj[td.id];
+//             if (td.filter === 'completed') {
+//               tasksForTodoList = tasksForTodoList.filter((t) => t.isDone === true);
+//             }
+//             if (td.filter === 'active') {
+//               tasksForTodoList = tasksForTodoList.filter((t) => t.isDone === false);
+//             } */}
           
-                  return  <Todolist
-                      key={td.id}
-                      id={td.id}
-                      title={td.title}
-                      filter={td.filter}            
-                      tasks={tasksForTodoList}
-                      removeTask={removeTask}
-                      addTask={addTask}
-                      //addToDoList={addToDoList}
-                      changeFilter={changeFilter}
-                      changeStatus={changeStatus}
-                      removeTodoList={removeTodoList}
-                      changeTitle={changeTitle}
-                      changeTodoListTitle={changeTodoListTitle}
-                    />
+//                   return ( <div> 
+                     
+//                   <Grid container>
+//                     <Todolist
+//                         key={td.id}
+//                         id={td.id}
+//                         title={td.title}
+//                         filter={td.filter}            
+//                         tasks={tasksForTodoList}
+//                         removeTask={removeTask}
+//                         addTask={addTask}
+//                         changeFilter={changeFilter}
+//                         changeStatus={changeStatus}
+//                         removeTodoList={removeTodoList}
+//                         changeTitle={changeTitle}
+//                         changeTodoListTitle={changeTodoListTitle}
+//                       />    
+//                   </Grid>    
+//                 </div>)
+//             } ) 
+//           }
+//       </div>
 
-            } ) 
-          }
-      </div>
 
-
-    </div>
-  );
+//     </div>
+//   )
 }
-
 export default App;

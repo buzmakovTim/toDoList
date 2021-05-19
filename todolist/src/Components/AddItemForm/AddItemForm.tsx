@@ -1,5 +1,7 @@
 import React, { useState, KeyboardEvent, ChangeEvent } from 'react';
+import { Button, IconButton, TextField } from '@material-ui/core';
 import c from '../../Todolist.module.css';
+import { AddBox } from '@material-ui/icons';
 
 type AddItemPropsType = {
     addItem: (title: string, id: string) => void;
@@ -34,16 +36,32 @@ export function AddItemForm(props: AddItemPropsType) {
 
     return(
         <div>
-            <input
+            {/* <input
             className={`${c.taskInput} ${error ? c.error: ""}`}
             value={title}
             onChange={(e) => setTitle(e.currentTarget.value)}
             onKeyPress={onKeyPressAddTask}
-            />
-        <button className={c.addTaskButton} onClick={addTaskOnClick}>
+            /> */}
+          <TextField
+            size={'small'}
+            variant={'outlined'}
+            error={error}
+            value={title}
+            onChange={(e) => setTitle(e.currentTarget.value)}
+            onKeyPress={onKeyPressAddTask}
+            label={"Title"}
+            helperText={error && 'Title is required!'}
+          />
+        {/* <button className={c.addTaskButton} onClick={addTaskOnClick}>
           +
-        </button>
-            {error && <div className={c.errorMessage}>Title is required!</div>}
+        </button> */}
+        <IconButton onClick={addTaskOnClick} style={{width: '5px'}} color={'primary'}>
+          <AddBox 
+            style={{marginLeft: '25px'}}
+          />
+        </IconButton>
+
+            {/* {error && <div className={c.errorMessage}>Title is required!</div>} */}
       </div>
     )
 }

@@ -5,7 +5,7 @@ import { TaskType, Todolist } from './Todolist';
 import { v1 } from 'uuid';
 import { AddItemForm } from './Components/AddItemForm/AddItemForm';
 import { EditableSpan } from './Components/EditableSpan/EditableSpan';
-import { AppBar, Button, Grid, IconButton, Toolbar, Typography } from '@material-ui/core';
+import { AppBar, Button, Grid, IconButton, Paper, Toolbar, Typography } from '@material-ui/core';
 import { Menu } from '@material-ui/icons';
 
 export type FilterValueType = 'all' | 'completed' | 'active';
@@ -122,24 +122,28 @@ function App() {
     if (td.filter === 'active') {
       tasksForTodoList = tasksForTodoList.filter((t) => t.isDone === false);
     }
-    
-    <Todolist
-      key={td.id}
-      id={td.id}
-      title={td.title}
-      filter={td.filter}            
-      tasks={tasksForTodoList}
-      removeTask={removeTask}
-      addTask={addTask}
-      changeFilter={changeFilter}
-      changeStatus={changeStatus}
-      removeTodoList={removeTodoList}
-      changeTitle={changeTitle}
-      changeTodoListTitle={changeTodoListTitle}
-    /> 
+    return (
+          <Grid item>
+              <Paper elevation={5} style={{padding: '20px'}}>
+                <Todolist
+                  key={td.id}
+                  id={td.id}
+                  title={td.title}
+                  filter={td.filter}            
+                  tasks={tasksForTodoList}
+                  removeTask={removeTask}
+                  addTask={addTask}
+                  changeFilter={changeFilter}
+                  changeStatus={changeStatus}
+                  removeTodoList={removeTodoList}
+                  changeTitle={changeTitle}
+                  changeTodoListTitle={changeTodoListTitle}
+                />
+          </Paper>
+          </Grid>
+    )
   })
 
-  console.log(todoListsComponents)
    return ( 
    <div className="App">
      
@@ -163,14 +167,14 @@ function App() {
 
          {/* <EditableSpan title={"Add NEW ToDoList"}/>  */}
 
-           <Grid container>
+           <Grid container style={{padding: '20px'}}>
               <AddItemForm addItem={addToDoList}/>
-              
            </Grid>
-           <Grid container>
-             
+           <Grid container spacing={3} style={{padding: '20px'}}>
+              {todoListsComponents}
            </Grid>
-           {todoListsComponents}
+
+           
        {/* </div> */}
        {/* <div className="ToDoLists"> */}
   </ div> )

@@ -55,8 +55,8 @@ export function Todolist(props: PropsTypeTodolist) {
   //const onChangeHandler = () => {props.changeStatus()};
 
   return (
-    <div className={c.todolistContainer}>
-      
+    //<div className={c.todolistContainerw}>
+      <div>
       {/* Remove todoList start*/}
       {/* <button onClick={removeTodoList} className={c.ListDeleteButton}>X</button> */}
       
@@ -73,7 +73,7 @@ export function Todolist(props: PropsTypeTodolist) {
       
 
       <AddItemForm addItem={props.addTask} todoListId={props.id}/>
-      
+
       <ul>
         {props.tasks.map( (t) => {
           

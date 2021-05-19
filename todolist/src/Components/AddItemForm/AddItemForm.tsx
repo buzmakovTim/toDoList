@@ -51,6 +51,7 @@ export function AddItemForm(props: AddItemPropsType) {
             onKeyPress={onKeyPressAddTask}
             label={"Title"}
             helperText={error && 'Title is required!'}
+            onBlur={ () => setError(false)}
           />
         {/* <button className={c.addTaskButton} onClick={addTaskOnClick}>
           +

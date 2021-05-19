@@ -25,8 +25,8 @@
 .titleDiv {
     color: rgb(94, 94, 94);
     font-size: 1.3em;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    /* padding-top: 5px; */
+    padding-bottom: 15px;
     margin-bottom: 15px;
     border-bottom: 1px rgba(173, 173, 173, 0.473) solid;
 }

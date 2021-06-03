@@ -22,7 +22,7 @@ type PropsTypeTodolist = {
   addTask: (title: string, id: string) => void;
   //addToDoList: (title: string, id?: string) => void;
   removeTask: (id: string, todoListId: string) => void;
-  changeFilter: (value: FilterValueType, todoListId: string) => void;
+  changeFilter: (todoListId: string, filter: FilterValueType) => void;
   changeStatus: (taskId: string, isDone: boolean, todoListId: string) => void;
   changeTitle: (taskId: string, newTitle: string, todoListId: string) => void;
   changeTodoListTitle: (newTitle: string, todoListId: string) => void;
@@ -34,13 +34,13 @@ export function Todolist(props: PropsTypeTodolist) {
 
   // Filter functions
   const showAll = () => {
-    props.changeFilter('all', props.id);
+    props.changeFilter(props.id, 'all');
   };
   const showActive = () => {
-    props.changeFilter('active', props.id);
+    props.changeFilter(props.id, 'active');
   };
   const showCompleted = () => {
-    props.changeFilter('completed', props.id);
+    props.changeFilter(props.id, 'completed');
   };
 
   const removeTodoList = () => {

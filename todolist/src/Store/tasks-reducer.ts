@@ -3,7 +3,7 @@ import React from 'react';
 import { v1 } from 'uuid';
 import { TodoListType } from '../App';
 import { AccessTimeOutlined } from '@material-ui/icons';
-import { AddTodolistActionType } from './todolists-reducer';
+import { AddTodolistActionType, RemoveTodolistActionType } from './todolists-reducer';
 
 type RemoveTaskActionType = {
     type: 'REMOVE-TASK'
@@ -28,7 +28,12 @@ type ChangeTaskTitleActionType = {
     taskId: string
 } 
 
-type ActionsType = RemoveTaskActionType | AddTaskActionType | ChangeTaskStatusActionType | ChangeTaskTitleActionType | AddTodolistActionType
+type ActionsType = RemoveTaskActionType | 
+                   AddTaskActionType | 
+                   ChangeTaskStatusActionType | 
+                   ChangeTaskTitleActionType | 
+                   AddTodolistActionType | 
+                   RemoveTodolistActionType
 
 
 
@@ -77,10 +82,15 @@ export const tasksReducer = (state: TasksStateType, action: ActionsType): TasksS
         case 'ADD-TODOLIST' : {
             const stateCopy = {...state}
 
-            stateCopy[v1()] = []
+            stateCopy[action.todolistId] = []
 
             return stateCopy
-        }  
+        } 
+        case "REMOVE-TODOLIST" : {
+            const stateCopy = {...state}
+            delete stateCopy[action.id]  // delete property
+            return stateCopy
+        } 
         
         default: 
             throw new Error("I don't understand action type")

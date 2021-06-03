@@ -3,16 +3,17 @@ import React from 'react';
 import { v1 } from 'uuid';
 import { TodoListType } from '../App';
 
-type RemoveTodolistActionType = {
-    type: "REMOVE-TODOLIST",
+export type RemoveTodolistActionType = {
+    type: "REMOVE-TODOLIST"
     id: string
 }
 export type AddTodolistActionType = {
-    type: "ADD-TODOLIST",
+    type: "ADD-TODOLIST"
     title: string
+    todolistId: string
 }
 type ChangeTodolistTitleActionType = {
-    type: "CHANGE-TODOLIST-TITLE",
+    type: "CHANGE-TODOLIST-TITLE"
     id: string
     title: string
 }
@@ -34,11 +35,11 @@ export const todolistsReducer = (state: Array<TodoListType>, action: ActionsType
         }
 
         case 'ADD-TODOLIST': {
-            return [...state, {
-                id: v1(),
+            return [{
+                id: action.todolistId,
                 title: action.title,
                 filter: 'all'
-            }]
+            }, ...state]
         }
 
         case 'CHANGE-TODOLIST-TITLE': {
@@ -72,7 +73,7 @@ export const removeTodolistAC = (todolistId: string): RemoveTodolistActionType =
     return {type: "REMOVE-TODOLIST", id: todolistId}
 }
 export const addTodolistAC = (title: string): AddTodolistActionType => {
-    return {type: "ADD-TODOLIST", title: title}
+    return {type: "ADD-TODOLIST", title: title, todolistId: v1()}
 }
 export const changeTodolistTitleAC = (todolistId: string, title: string): ChangeTodolistTitleActionType => {
     return {type: "CHANGE-TODOLIST-TITLE", id: todolistId, title: title}

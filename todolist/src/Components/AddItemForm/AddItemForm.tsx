@@ -2,10 +2,12 @@ import React, { useState, KeyboardEvent, ChangeEvent } from 'react';
 import { Button, IconButton, TextField } from '@material-ui/core';
 import c from '../../Todolist.module.css';
 import { AddBox } from '@material-ui/icons';
+import { useDispatch } from 'react-redux';
+import { addTaskAC } from '../../Store/tasks-reducer';
+import { v1 } from 'uuid';
 
 type AddItemPropsType = {
-    addItem: (title: string, id: string) => void;
-    todoListId?: string
+    addItem: (title: string) => void;
 }
 
 export function AddItemForm(props: AddItemPropsType) {
@@ -21,7 +23,7 @@ export function AddItemForm(props: AddItemPropsType) {
     const addTaskOnClick = () => {
 
         if(title.trim() !== "" ) {
-          props.addItem(title.trim(), props.todoListId ? props.todoListId : '');
+          props.addItem(title.trim());
           setTitle('');
         } else {
           setError(true);

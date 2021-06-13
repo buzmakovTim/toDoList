@@ -22,7 +22,7 @@ type PropsTypeTodolist = {
   todolistId: string; 
   title: string;
   filter: FilterValueType;
-  //tasks: Array<TaskType>;
+  //tasks: TasksStateType;
   //addTask: (title: string, id: string) => void;
   //addToDoList: (title: string, id?: string) => void;
   //removeTask: (id: string, todoListId: string) => void;

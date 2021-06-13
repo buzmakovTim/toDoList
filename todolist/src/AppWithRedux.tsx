@@ -87,7 +87,7 @@ function AppWithRedux() {
                   todolistId={td.id}
                   title={td.title}
                   filter={td.filter}            
-                  //tasks={tasksForTodoList}
+                  //tasks={tasks}
                   //removeTask={removeTask}
                   //addTask={addTask}
                   //changeFilter={changeFilter}

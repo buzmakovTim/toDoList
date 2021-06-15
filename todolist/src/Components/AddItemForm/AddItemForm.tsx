@@ -10,8 +10,9 @@ type AddItemPropsType = {
     addItem: (title: string) => void;
 }
 
-export function AddItemForm(props: AddItemPropsType) {
+export const AddItemForm = React.memo((props: AddItemPropsType) => {
 
+    console.log('AddItemForm has called')
     let [title, setTitle] = useState<string>('');
     let [error, setError] = useState<boolean>(false);
 
@@ -32,7 +33,9 @@ export function AddItemForm(props: AddItemPropsType) {
       };
     
     const onKeyPressAddTask = (e: KeyboardEvent<HTMLInputElement>) => {
-    setError(false);
+    if(error !== false){
+        setError(false);
+    }
     if (e.key === 'Enter') addTaskOnClick();
     };
 
@@ -67,4 +70,4 @@ export function AddItemForm(props: AddItemPropsType) {
             {/* {error && <div className={c.errorMessage}>Title is required!</div>} */}
       </div>
     )
-}
+})

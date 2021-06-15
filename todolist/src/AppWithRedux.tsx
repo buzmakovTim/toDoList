@@ -1,4 +1,4 @@
-import React, { useState, useReducer } from 'react';
+import React, {useCallback} from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { TaskType, Todolist } from './Todolist';
@@ -71,9 +71,14 @@ function AppWithRedux() {
   // function addToDoList(title: string) {
 
   //     const action = addTodolistAC(title)
-  //     dispatch(action)
+  //     dispatch(action) 
       
-  //}
+  
+
+  // Add to Do list callBack function with useCallback
+  const addToDolist = useCallback((title: string) => {
+    dispatch(addTodolistAC(title))
+  }, []);
 
 
   const todoListsComponents = todoLists.map( (td) => {
@@ -115,7 +120,7 @@ function AppWithRedux() {
                    <Button variant={'outlined'} 
                              color={'inherit'}>
                      Login
-                   </Button> 
+                   </Button>  
                </Toolbar>
        </AppBar> 
 
@@ -126,7 +131,7 @@ function AppWithRedux() {
 
            <Grid container style={{padding: '20px'}}>
               
-              <AddItemForm addItem={ (title) => {dispatch(addTodolistAC(title))}} />
+              <AddItemForm addItem={addToDolist} />
            </Grid>
            <Grid container spacing={3} style={{padding: '20px'}}>
               {todoListsComponents}

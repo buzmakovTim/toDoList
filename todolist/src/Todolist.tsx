@@ -1,4 +1,4 @@
-import React, { useState, KeyboardEvent } from 'react';
+import React, { useCallback } from 'react';
 import { preProcessFile } from 'typescript';
 import { v1 } from 'uuid';
 import { FilterValueType,  TasksStateType} from './AppWithRedux';
@@ -62,7 +62,9 @@ export function Todolist(props: PropsTypeTodolist) {
     dispatch(changeTodolistTitleAC(props.todolistId, newValue))
   }
 
-  
+  const addTask = useCallback((title: string) => {
+    dispatch(addTaskAC(title, props.todolistId))
+  },[])
 
 
     // We gonna show task only depends what filter selected
@@ -93,7 +95,7 @@ export function Todolist(props: PropsTypeTodolist) {
       </div>
       
 
-      <AddItemForm addItem={ (title) => {dispatch(addTaskAC(title, props.todolistId))}}/> 
+      <AddItemForm addItem={addTask}/> 
       {/* addItem={props.addTask} todoListId={props.id}/> */}
 
       <ul>

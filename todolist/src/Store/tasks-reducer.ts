@@ -3,7 +3,7 @@ import React from 'react';
 import { v1 } from 'uuid';
 import { TodoListType } from '../AppWithRedux';
 import { AccessTimeOutlined } from '@material-ui/icons';
-import { AddTodolistActionType, RemoveTodolistActionType, todoListId_1, todoListId_2 } from './todolists-reducer';
+import { AddTodolistActionType, RemoveTodolistActionType, } from './todolists-reducer';
 
 type RemoveTaskActionType = {
     type: 'REMOVE-TASK'
@@ -37,14 +37,14 @@ type ActionsType = RemoveTaskActionType |
 
 
 const initialState: TasksStateType = {
-    [todoListId_1] : [{ id: v1(), title: 'CSS', isDone: true },
-      { id: v1(), title: 'JS', isDone: true },
-      { id: v1(), title: 'React', isDone: false },
-      { id: v1(), title: 'HTML', isDone: false },],
-    [todoListId_2] : [{ id: v1(), title: 'CSS', isDone: true },
-      { id: v1(), title: 'Book', isDone: true },
-      { id: v1(), title: 'Beer', isDone: false },
-      { id: v1(), title: 'Milk', isDone: false },],
+    // [todoListId_1] : [{ id: v1(), title: 'CSS', isDone: true },
+    //   { id: v1(), title: 'JS', isDone: true },
+    //   { id: v1(), title: 'React', isDone: false },
+    //   { id: v1(), title: 'HTML', isDone: false },],
+    // [todoListId_2] : [{ id: v1(), title: 'CSS', isDone: true },
+    //   { id: v1(), title: 'Book', isDone: true },
+    //   { id: v1(), title: 'Beer', isDone: false },
+    //   { id: v1(), title: 'Milk', isDone: false },],
   }                
 
 export const tasksReducer = (state: TasksStateType = initialState, action: ActionsType): TasksStateType => {

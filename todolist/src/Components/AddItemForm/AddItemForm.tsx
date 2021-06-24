@@ -5,6 +5,7 @@ import { AddBox } from '@material-ui/icons';
 import { useDispatch } from 'react-redux';
 import { addTaskAC } from '../../Store/tasks-reducer';
 import { v1 } from 'uuid';
+import style from './AddItemForm.module.css'
 
 type AddItemPropsType = {
     addItem: (title: string) => void;
@@ -40,7 +41,7 @@ export const AddItemForm = React.memo((props: AddItemPropsType) => {
     };
 
     return(
-        <div>
+        <div className={style.itemForm}>
             {/* <input
             className={`${c.taskInput} ${error ? c.error: ""}`}
             value={title}

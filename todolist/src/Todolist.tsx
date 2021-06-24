@@ -34,8 +34,9 @@ type PropsTypeTodolist = {
   // onChangeTitle: (newValue: string) => void;
 };
 
-export function Todolist(props: PropsTypeTodolist) {
+export const Todolist = React.memo((props: PropsTypeTodolist) => {
 
+  console.log('ToDolist Called')
   const tasks = useSelector<AppRootState, Array<TaskType>>( state => state.tasks[props.todolistId])
   const dispatch = useDispatch();
 
@@ -64,28 +65,23 @@ export function Todolist(props: PropsTypeTodolist) {
 
   const addTask = useCallback((title: string) => {
     dispatch(addTaskAC(title, props.todolistId))
-  },[])
+  },[props.todolistId, addTaskAC])
 
 
     // We gonna show task only depends what filter selected
     let tasksForTodoList = tasks;
     if (props.filter === 'completed') {
-      tasksForTodoList = tasksForTodoList.filter((t) => t.isDone === true);
+      tasksForTodoList = tasks.filter((t) => t.isDone === true);
     }
     if (props.filter === 'active') {
-      tasksForTodoList = tasksForTodoList.filter((t) => t.isDone === false);
+      tasksForTodoList = tasks.filter((t) => t.isDone === false);
     }
 
 
   return (
-    //<div className={c.todolistContainerw}>
+    
       <div>
-      {/* Remove todoList start*/}
-      {/* <button onClick={removeTodoList} className={c.ListDeleteButton}>X</button> */}
       
-      
-      {/* Remove todoList end*/}
-
       <div className={c.titleDiv}>
         <EditableSpan title={props.title} onChangeTitle={changeTodoListTileHandler}/>
         <IconButton onClick={removeTodoList}>
@@ -174,6 +170,6 @@ export function Todolist(props: PropsTypeTodolist) {
       </div>
     </div>
   );
-}
+})
 
 

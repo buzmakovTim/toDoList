@@ -24,65 +24,33 @@ export type TasksStateType = {
 }
 
 function AppWithRedux() {
+  console.log('App Called');
   
 
   const dispatch = useDispatch();
   const todoLists = useSelector<AppRootState, Array<TodoListType>>( state => state.todolist)
-  //const tasks = useSelector<AppRootState, TasksStateType>( state => state.tasks)
+  
 
-
-  // function changeStatus(taskId: string, isDone: boolean, todoListId: string) {
-    
-  //   const action = changeTaskStatusAC(taskId, isDone, todoListId)
-  //   dispatch(action)
-  // }
-
-  // function changeTitle(taskId: string, newTitle: string, todoListId: string) {
-  //   //const action = changeTaskTitleAC(taskId, newTitle, todoListId)
-  //   dispatch(changeTaskTitleAC(taskId, newTitle, todoListId))
-  // }
-
-  function changeTodoListTitle(todoListId: string, newTitle: string) {
+  // Change title with useCallback
+  const changeTodoListTitle = useCallback((todoListId: string, newTitle: string) => {
     dispatch(changeTodolistTitleAC(todoListId, newTitle))
-  }
+  }, [dispatch])
 
-  // function changeFilter(todoListId: string, filter: FilterValueType) {
-  //   dispatch(changeTodolistFilterAC(todoListId, filter))
-  // }
-
-  // function removeTask(id: string, todoListId: string) {
-    
-  //   const action = removeTaskAC(id, todoListId)
-  //   dispatch(action)
-  // }
-
-  let removeTodoList = (todoListId: string) => {
+  //remove todolist with useCallback
+  const removeTodoList = useCallback((todoListId: string) => {
     
     const action = removeTodolistAC(todoListId)
     dispatch(action)
-  }
+  }, [dispatch])
 
-  // function addTask(title: string, todolistId: string) {
-    
-  //   const action = addTaskAC(title, todolistId)
-  //   dispatch(action)
-  // }
-
-  // function addToDoList(title: string) {
-
-  //     const action = addTodolistAC(title)
-  //     dispatch(action) 
-      
-  
 
   // Add to Do list callBack function with useCallback
   const addToDolist = useCallback((title: string) => {
     dispatch(addTodolistAC(title))
-  }, []);
+  }, [dispatch]);
 
 
   const todoListsComponents = todoLists.map( (td) => {
-
 
     return (
           <Grid item key={td.id}>

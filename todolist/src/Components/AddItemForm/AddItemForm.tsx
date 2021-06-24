@@ -18,7 +18,7 @@ export const AddItemForm = React.memo((props: AddItemPropsType) => {
 
     const onChangeTitle = (e: ChangeEvent<HTMLInputElement>) => {
         setTitle(e.currentTarget.value)
-        setError(false)
+        setError(false)  
     }
 
     const addTaskOnClick = () => {

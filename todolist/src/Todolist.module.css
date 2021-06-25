@@ -97,14 +97,6 @@ h3 {
     background-color: rgba(128, 128, 128, 0.075);
 }
 
-.taskLine {
-    margin-bottom: 10px;
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    align-items: center;
-}
-
 .buttonRemoveTask {
     margin: 0 0 0 auto;
 }

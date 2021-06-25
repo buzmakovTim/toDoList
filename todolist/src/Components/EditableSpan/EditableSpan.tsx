@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useState, useCallback } from 'react';
 
 
 
@@ -7,8 +7,10 @@ type EditableSpanPropsType = {
     onChangeTitle: (newValue: string) => void;
   }
   
-export function EditableSpan(props: EditableSpanPropsType) {
+export const EditableSpan = React.memo((props: EditableSpanPropsType) => {
   
+    console.log('Editable Span')
+    
     let [editMode, setEditMode] = useState(false)
     let [title, setTile] = useState('')
 
@@ -18,7 +20,6 @@ export function EditableSpan(props: EditableSpanPropsType) {
     }
 
     let deactivateEditMode = () => {
-    
         setEditMode(false)
         props.onChangeTitle(title)
     }
@@ -29,4 +30,4 @@ export function EditableSpan(props: EditableSpanPropsType) {
         <input value={title} onChange={onChangeTitleHandler} onBlur={deactivateEditMode} autoFocus></input> :
         <span onDoubleClick={activateEditMode}>{props.title}</span>
       )
-  }
+  })

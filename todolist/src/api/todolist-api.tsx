@@ -25,7 +25,7 @@ type CommonResponseType<T = {}> = {
     data: T
 }
 
-
+//type
 type TodoType = {
     id: string
     title: string

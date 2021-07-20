@@ -1,6 +1,6 @@
 import React, {useCallback} from 'react'
 import { useDispatch } from 'react-redux';
-import { changeTaskStatusAC, changeTaskTitleAC, removeTaskAC } from '../../Store/tasks-reducer';
+import { changeTaskStatusAC, changeTaskTitleAC, deleteTaskThunkCreator, removeTaskAC } from '../../Store/tasks-reducer';
 import { TaskType } from '../../Todolist';
 import { EditableSpan } from '../EditableSpan/EditableSpan';
 import { Delete } from '@material-ui/icons';
@@ -51,7 +51,9 @@ export const Task = React.memo((props: TaskPropsType) => {
         </button> */}
         <IconButton onClick={() => {
             // props.removeTask(t.id, props.id);
-            dispatch(removeTaskAC(props.task.id, props.todolistId))
+            //dispatch(removeTaskAC(props.task.id, props.todolistId))
+            dispatch(deleteTaskThunkCreator(props.todolistId, props.task.id))
+
           }}>
           <Delete/>
         </IconButton>

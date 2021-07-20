@@ -9,7 +9,7 @@ import { Button, Checkbox, IconButton } from '@material-ui/core';
 import { Delete } from '@material-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppRootState } from './Store/store';
-import { addTaskAC, changeTaskStatusAC, changeTaskTitleAC, fetchTasksThunkCreator, removeTaskAC } from './Store/tasks-reducer';
+import { addTaskAC, changeTaskStatusAC, changeTaskTitleAC, createTaskThunkCreator, fetchTasksThunkCreator, removeTaskAC } from './Store/tasks-reducer';
 import { changeTodolistFilterAC, changeTodolistTitleAC } from './Store/todolists-reducer';
 import { Task } from './Components/Task/Task';
 
@@ -65,7 +65,9 @@ export const Todolist = React.memo((props: PropsTypeTodolist) => {
   }, [changeTodolistTitleAC, props.todolistId]);
 
   const addTask = useCallback((title: string) => {
-    dispatch(addTaskAC(title, props.todolistId))
+    
+    //dispatch(addTaskAC(title, props.todolistId))
+    dispatch(createTaskThunkCreator(props.todolistId, title))
   },[props.todolistId, addTaskAC])
 
 

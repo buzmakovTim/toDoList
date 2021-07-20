@@ -139,5 +139,30 @@ export const fetchTasksThunkCreator = (todoId: string) => {
                 dispatch(fetchTasksAC(todoId, res.data.items))
             }) 
     }
-    
+}
+
+export const deleteTaskThunkCreator = (todoId: string, taskId: string) => {
+    return (dispatch: Dispatch) => {
+
+        todolistAPI.deleteTask(todoId, taskId)
+            .then( (res) => {
+                
+                if (res.data.resultCode === 0){
+                    dispatch(removeTaskAC(taskId, todoId))
+                }
+            })
+    }
+}
+
+export const createTaskThunkCreator = (todoId: string, title: string) => {
+    return (dispatch: Dispatch) => {
+
+        todolistAPI.createTask(todoId, title)
+            .then( (res) => {
+                
+                if (res.data.resultCode === 0){
+                    dispatch(addTaskAC(title, todoId))
+                }
+            })
+    }
 }

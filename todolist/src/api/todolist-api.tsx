@@ -74,6 +74,16 @@ export const todolistAPI = {
 
     getTasks(todoId: string){
         return instance.get(`todo-lists/${todoId}/tasks`)
+    },
+
+    deleteTask(todoId: string, taskId: string){
+        return instance.delete(`todo-lists/${todoId}/tasks/${taskId}`)
+    },
+
+    createTask(todoId: string, title: string) {
+        return instance.post(`todo-lists/${todoId}/tasks`, {title})
     }
+
+
 }
 

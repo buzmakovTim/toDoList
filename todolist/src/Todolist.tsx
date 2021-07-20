@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { preProcessFile, StringMappingType } from 'typescript';
 import { v1 } from 'uuid';
 import { FilterValueType,  TasksStateType} from './AppWithRedux';
@@ -9,7 +9,7 @@ import { Button, Checkbox, IconButton } from '@material-ui/core';
 import { Delete } from '@material-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppRootState } from './Store/store';
-import { addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC } from './Store/tasks-reducer';
+import { addTaskAC, changeTaskStatusAC, changeTaskTitleAC, fetchTasksThunkCreator, removeTaskAC } from './Store/tasks-reducer';
 import { changeTodolistFilterAC, changeTodolistTitleAC } from './Store/todolists-reducer';
 import { Task } from './Components/Task/Task';
 
@@ -23,16 +23,8 @@ type PropsTypeTodolist = {
   todolistId: string; 
   title: string;
   filter: FilterValueType;
-  //tasks: TasksStateType;
-  //addTask: (title: string, id: string) => void;
-  //addToDoList: (title: string, id?: string) => void;
-  //removeTask: (id: string, todoListId: string) => void;
-  //changeFilter: (todoListId: string, filter: FilterValueType) => void;
-  //changeStatus: (taskId: string, isDone: boolean, todoListId: string) => void;
-  //changeTitle: (taskId: string, newTitle: string, todoListId: string) => void;
   changeTodoListTitle: (newTitle: string, todoListId: string) => void;
   removeTodoList: (id: string) => void;
-  // onChangeTitle: (newValue: string) => void;
 };
 
 export const Todolist = React.memo((props: PropsTypeTodolist) => {
@@ -40,6 +32,12 @@ export const Todolist = React.memo((props: PropsTypeTodolist) => {
   console.log('ToDolist Called')
   const tasks = useSelector<AppRootState, Array<TaskType>>( state => state.tasks[props.todolistId])
   const dispatch = useDispatch();
+
+
+  useEffect(() => {
+    dispatch(fetchTasksThunkCreator(props.todolistId))
+  }, [])
+
 
   // Filter functions
   const showAll = useCallback(() => {

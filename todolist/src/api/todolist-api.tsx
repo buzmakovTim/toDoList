@@ -26,31 +26,54 @@ type CommonResponseType<T = {}> = {
 }
 
 //type
-type TodoType = {
-    id: string
-    title: string
-    addedDate: string
-    order: number
-}
+// type TodoType = {
+//     id: string
+//     title: string
+//     addedDate: string
+//     order: number
+// }
 
-export const todolistApi = {
+// export const todolistAPI = {
+
+//     getTodos() {
+//         return instance.get<TodoType[]>('todo-lists')
+//     },
+
+//     createTodo(title: string) {
+//         return instance.post<CommonResponseType<{item: TodoType}>>('todo-lists', {title})
+//     },
+
+//     deleteTodo(todoId: string) {
+//         return instance.delete<CommonResponseType>(`todo-lists/${todoId}`)
+//     },
+
+//     updateTodoTitle(todoId: string, title: string){
+//         return instance.put<CommonResponseType>(`todo-lists/${todoId}`, {title})
+//     }
+// }
+
+// Without types
+
+export const todolistAPI = {
 
     getTodos() {
-        return instance.get<TodoType[]>('todo-lists')
+        return instance.get('todo-lists')
     },
 
     createTodo(title: string) {
-        return instance.post<CommonResponseType<{item: TodoType}>>('todo-lists', {title})
+        return instance.post('todo-lists', {title})
     },
 
     deleteTodo(todoId: string) {
-        return instance.delete<CommonResponseType>(`todo-lists/${todoId}`)
+        return instance.delete(`todo-lists/${todoId}`)
     },
 
     updateTodoTitle(todoId: string, title: string){
-        return instance.put<CommonResponseType>(`todo-lists/${todoId}`, {title})
+        return instance.put(`todo-lists/${todoId}`, {title})
+    },
+
+    getTasks(todoId: string){
+        return instance.get(`todo-lists/${todoId}/tasks`)
     }
-
-
 }
 

@@ -1,9 +1,12 @@
 import { FilterValueType, TasksStateType } from '../AppWithRedux';
 import React from 'react';
 import { v1 } from 'uuid';
+import  { Dispatch } from 'redux'
 import { TodoListType } from '../AppWithRedux';
 import { AccessTimeOutlined } from '@material-ui/icons';
-import { AddTodolistActionType, RemoveTodolistActionType, } from './todolists-reducer';
+import { AddTodolistActionType, RemoveTodolistActionType, SetTodoListActionType, } from './todolists-reducer';
+import { todolistAPI } from '../api/todolist-api';
+import { TaskType } from '../Todolist';
 
 
 //Action type
@@ -13,7 +16,9 @@ type ActionsType = |
                     ReturnType<typeof  changeTaskStatusAC> | 
                     ReturnType<typeof changeTaskTitleAC> | 
                     AddTodolistActionType | 
-                    RemoveTodolistActionType
+                    RemoveTodolistActionType | 
+                    SetTodoListActionType |
+                    ReturnType<typeof fetchTasksAC>
 
 
 // Initial state
@@ -31,6 +36,22 @@ const initialState: TasksStateType = {
 export const tasksReducer = (state: TasksStateType = initialState, action: ActionsType): TasksStateType => {
 
     switch(action.type){
+
+        
+        case 'SET-TODOLISTS':{
+            const stateCopy = {...state}
+            action.todolists.forEach((tl) => {
+                stateCopy[tl.id] = []
+            }) 
+            
+            return stateCopy;
+        }
+        
+        case 'SET-TUSKS': {
+            const stateCopy = {...state}
+            stateCopy[action.todoId] = action.tasks
+            return stateCopy
+        }
 
         case 'REMOVE-TASK' : {
             
@@ -102,3 +123,21 @@ export const changeTaskTitleAC = (taskId: string, title: string, todolistId: str
     return {type: "CHANGE-TASK-TITLE", taskId, title, todolistId} as const
 }
 
+export const fetchTasksAC = (todoId: string, tasks: Array<TaskType>) => {
+    return {type: 'SET-TUSKS', todoId, tasks} as const
+}
+
+//
+//Thunk creator
+//
+export const fetchTasksThunkCreator = (todoId: string) => {
+
+    return (dispatch: Dispatch) => {
+
+        todolistAPI.getTasks(todoId)
+            .then((res)=> {
+                dispatch(fetchTasksAC(todoId, res.data.items))
+            }) 
+    }
+    
+}

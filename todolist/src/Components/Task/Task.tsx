@@ -14,7 +14,8 @@ type TaskPropsType = {
   } 
   
 export const Task = React.memo((props: TaskPropsType) => {
-    
+
+      
       const dispatch = useDispatch();  
   
       const onChangeTaskTitleHandler = useCallback((newValue: string) => {

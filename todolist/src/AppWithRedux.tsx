@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { TaskType, Todolist } from './Todolist';
@@ -7,10 +7,11 @@ import { AddItemForm } from './Components/AddItemForm/AddItemForm';
 import { EditableSpan } from './Components/EditableSpan/EditableSpan';
 import { AppBar, Button, Grid, IconButton, Paper, Toolbar, Typography } from '@material-ui/core';
 import { Menu } from '@material-ui/icons';
-import { addTodolistAC, changeTodolistFilterAC, changeTodolistTitleAC, removeTodolistAC, todolistsReducer } from './Store/todolists-reducer';
+import { addTodolistAC, changeTodolistFilterAC, changeTodolistTitleAC, fetchTodolistsThunkCreator, removeTodolistAC, setTodoListsAC, todolistsReducer } from './Store/todolists-reducer';
 import { addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer } from './Store/tasks-reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppRootState } from './Store/store';
+import { todolistAPI } from './api/todolist-api';
 
 export type FilterValueType = 'all' | 'completed' | 'active';
 
@@ -30,6 +31,13 @@ function AppWithRedux() {
   const dispatch = useDispatch();
   const todoLists = useSelector<AppRootState, Array<TodoListType>>( state => state.todolist)
   
+
+  // UseEffect Side effect
+  useEffect(() => {
+    //using thunk
+    dispatch(fetchTodolistsThunkCreator());
+  }, [])
+
 
   // Change title with useCallback
   const changeTodoListTitle = useCallback((todoListId: string, newTitle: string) => {
@@ -56,18 +64,11 @@ function AppWithRedux() {
           <Grid item key={td.id}>
               <Paper elevation={5} style={{padding: '20px'}}>
                 <Todolist
-                  
-                  todolistId={td.id}
-                  title={td.title}
-                  filter={td.filter}            
-                  //tasks={tasks}
-                  //removeTask={removeTask}
-                  //addTask={addTask}
-                  //changeFilter={changeFilter}
-                  //changeStatus={changeStatus}
-                  removeTodoList={removeTodoList}
-                  //changeTitle={changeTitle}
-                  changeTodoListTitle={changeTodoListTitle}
+                    todolistId={td.id}
+                    title={td.title}
+                    filter={td.filter}            
+                    removeTodoList={removeTodoList}
+                    changeTodoListTitle={changeTodoListTitle}
                 />
           </Paper>
           </Grid>

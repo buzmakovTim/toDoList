@@ -8,10 +8,6 @@ const rootReducer = combineReducers({
     tasks: tasksReducer
 });
 
-// type AppRootState = {
-//     todolist: Array<TodoListType>
-//     tasks: TasksStateType
-// }
 
 // Same as what above, but more practical
 export type AppRootState = ReturnType<typeof rootReducer>

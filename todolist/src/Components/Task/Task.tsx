@@ -1,11 +1,12 @@
-import React, {useCallback} from 'react'
+import React, {useCallback, ChangeEvent} from 'react'
 import { useDispatch } from 'react-redux';
-import { changeTaskStatusAC, changeTaskTitleAC, deleteTaskThunkCreator, removeTaskAC } from '../../Store/tasks-reducer';
+import { changeTaskStatusAC, changeTaskTitleAC, deleteTaskThunkCreator, removeTaskAC, updateTaskStatusThunkCreator } from '../../Store/tasks-reducer';
 import { TaskType } from '../../Todolist';
 import { EditableSpan } from '../EditableSpan/EditableSpan';
 import { Delete } from '@material-ui/icons';
 import { Button, Checkbox, IconButton } from '@material-ui/core';
 import style from './Task.module.css';
+import { TaskStatuses } from '../../api/todolist-api';
 
 type TaskPropsType = {
     todolistId: string,
@@ -19,18 +20,26 @@ export const Task = React.memo((props: TaskPropsType) => {
       const dispatch = useDispatch();  
   
       const onChangeTaskTitleHandler = useCallback((newValue: string) => {
-      dispatch(changeTaskTitleAC(props.task.id, newValue, props.todolistId))
+          dispatch(changeTaskTitleAC(props.task.id, newValue, props.todolistId))
       }, [])
+
+      const onChangeHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+        let newIsDoneValue = e.currentTarget.checked
+        //props.changeTaskStatus(props.task.id, newIsDoneValue ? TaskStatuses.Completed : TaskStatuses.New, props.todolistId)
+        dispatch(updateTaskStatusThunkCreator(props.todolistId, props.task.id, newIsDoneValue ? TaskStatuses.Completed : TaskStatuses.New))
+
+    }, [props.task.id, props.todolistId]);
+
   
-  return <div key={props.task.id} className={props.task.isDone ? "isDone" : ""}>
+  return <div key={props.task.id} className={props.task.status === TaskStatuses.Completed ? "isDone" : ""}>
     <div className={style.taskLine}>
       <div>
   
         <Checkbox 
             color={'primary'}
-            checked={props.task.isDone} 
+            checked={props.task.status === TaskStatuses.Completed} 
             // onChange={ () => {props.changeStatus(t.id, !t.isDone, props.id)}}
-            onChange={ () => {dispatch(changeTaskStatusAC(props.task.id, !props.task.isDone, props.todolistId))}}
+            onChange={onChangeHandler}
             />
         {/* <input onChange={ () => {props.changeStatus(t.id, !t.isDone, props.id)}} type="checkbox" checked={t.isDone} /> */}
         

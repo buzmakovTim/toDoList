@@ -17,9 +17,9 @@ export const TaskBaseExample = (props: any) => {
   
 
   return <> 
-    <Task todolistId ={'1'} task={{id: '1', title: 'React', isDone: false}}/>
+    {/* <Task todolistId ={'1'} task={{id: '1', title: 'React', isDone: false}}/> */}
 
-    <Task todolistId ={'2'} task={{id: '2', title: 'JS', isDone: true}}/>
+    {/* <Task todolistId ={'2'} task={{id: '2', title: 'JS', isDone: true}}/> */}
 
     </>
 }

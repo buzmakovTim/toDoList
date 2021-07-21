@@ -12,11 +12,13 @@ import { AppRootState } from './Store/store';
 import { addTaskAC, changeTaskStatusAC, changeTaskTitleAC, createTaskThunkCreator, fetchTasksThunkCreator, removeTaskAC } from './Store/tasks-reducer';
 import { changeTodolistFilterAC, changeTodolistTitleAC } from './Store/todolists-reducer';
 import { Task } from './Components/Task/Task';
+import { TaskStatuses } from './api/todolist-api';
 
 export type TaskType = {
+  todoListId: string;
   id: string;
   title: string;
-  isDone: boolean;
+  status: TaskStatuses;
 };
 
 type PropsTypeTodolist = {
@@ -65,19 +67,18 @@ export const Todolist = React.memo((props: PropsTypeTodolist) => {
   }, [changeTodolistTitleAC, props.todolistId]);
 
   const addTask = useCallback((title: string) => {
-    
     //dispatch(addTaskAC(title, props.todolistId))
     dispatch(createTaskThunkCreator(props.todolistId, title))
-  },[props.todolistId, addTaskAC])
+  },[props.todolistId, createTaskThunkCreator])
 
 
     // We gonna show task only depends what filter selected
     let tasksForTodoList = tasks;
     if (props.filter === 'completed') {
-      tasksForTodoList = tasks.filter((t) => t.isDone === true);
+      tasksForTodoList = tasks.filter((t) => t.status === TaskStatuses.Completed);
     }
     if (props.filter === 'active') {
-      tasksForTodoList = tasks.filter((t) => t.isDone === false);
+      tasksForTodoList = tasks.filter((t) => t.status === TaskStatuses.New);
     }
 
 

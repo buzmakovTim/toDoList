@@ -7,7 +7,7 @@ import { AddItemForm } from './Components/AddItemForm/AddItemForm';
 import { EditableSpan } from './Components/EditableSpan/EditableSpan';
 import { AppBar, Button, Grid, IconButton, Paper, Toolbar, Typography } from '@material-ui/core';
 import { Menu } from '@material-ui/icons';
-import { addTodolistAC, changeTodolistFilterAC, changeTodolistTitleAC, fetchTodolistsThunkCreator, removeTodolistAC, setTodoListsAC, todolistsReducer } from './Store/todolists-reducer';
+import { addTodolistAC, changeTodolistFilterAC, changeTodolistTitleAC, createTodolistThunkCreator, deleteTodolistThunkCreator, fetchTodolistsThunkCreator, removeTodolistAC, setTodoListsAC, todolistsReducer } from './Store/todolists-reducer';
 import { addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer } from './Store/tasks-reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppRootState } from './Store/store';
@@ -47,14 +47,17 @@ function AppWithRedux() {
   //remove todolist with useCallback
   const removeTodoList = useCallback((todoListId: string) => {
     
-    const action = removeTodolistAC(todoListId)
-    dispatch(action)
+    //const action = removeTodolistAC(todoListId)
+    //dispatch(action)
+    dispatch(deleteTodolistThunkCreator(todoListId))
+
   }, [dispatch])
 
 
   // Add to Do list callBack function with useCallback
   const addToDolist = useCallback((title: string) => {
-    dispatch(addTodolistAC(title))
+    //dispatch(addTodolistAC(title))
+    dispatch(createTodolistThunkCreator(title))
   }, [dispatch]);
 
 

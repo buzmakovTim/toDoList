@@ -1,3 +1,5 @@
+import { AppRootState } from './store';
+// import { TaskType } from './../Todolist';
 import { FilterValueType, TasksStateType } from '../AppWithRedux';
 import React from 'react';
 import { v1 } from 'uuid';
@@ -5,8 +7,9 @@ import  { Dispatch } from 'redux'
 import { TodoListType } from '../AppWithRedux';
 import { AccessTimeOutlined } from '@material-ui/icons';
 import { AddTodolistActionType, RemoveTodolistActionType, SetTodoListActionType, } from './todolists-reducer';
-import { todolistAPI } from '../api/todolist-api';
+import { TaskStatuses, todolistAPI } from '../api/todolist-api';
 import { TaskType } from '../Todolist';
+// import { TaskType } from '../Todolist';
 
 
 //Action type
@@ -20,6 +23,7 @@ type ActionsType = |
                     SetTodoListActionType |
                     ReturnType<typeof fetchTasksAC>
 
+//export type TaskStatuses = number;
 
 // Initial state
 const initialState: TasksStateType = {
@@ -63,12 +67,12 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
             return stateCopy;
         }
         case 'ADD-TASK' : {
-
+            
             const stateCopy = {...state};
-            const tasks = stateCopy[action.todolistId];
-            const newTask = {id: v1(), title: action.title, isDone: false}
-            const newTasks = [newTask, ...tasks];
-            stateCopy[action.todolistId] = newTasks;
+            const tasks = stateCopy[action.task.todoListId];
+            const newTasks = [action.task, ...tasks];
+            stateCopy[action.task.todoListId] = newTasks;
+            
             return stateCopy;
         }
         case 'CHANGE-TASK-STATUS' : {
@@ -76,7 +80,7 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
             const stateCopy = {...state};
             const tasks = stateCopy[action.todolistId];
             
-            stateCopy[action.todolistId] = tasks.map( t => t.id === action.taskId ? {...t, isDone: action.isDone} : t)
+            stateCopy[action.todolistId] = tasks.map( t => t.id === action.taskId ? {...t, status: action.status} : t)
             
             return stateCopy;
         }
@@ -113,11 +117,11 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
 export const removeTaskAC = (taskId: string, todolistId: string) => {
     return {type: "REMOVE-TASK", todolistId, taskId} as const
 }
-export const addTaskAC = (title: string, todolistId: string) => {
-    return {type: "ADD-TASK", title, todolistId} as const
+export const addTaskAC = (task: TaskType) => {
+    return {type: "ADD-TASK", task} as const
 }
-export const changeTaskStatusAC = (taskId: string, isDone: boolean, todolistId: string) => {
-    return {type: "CHANGE-TASK-STATUS", taskId, isDone, todolistId} as const
+export const changeTaskStatusAC = (taskId: string, status: TaskStatuses, todolistId: string) => {
+    return {type: "CHANGE-TASK-STATUS", taskId, status, todolistId} as const
 }
 export const changeTaskTitleAC = (taskId: string, title: string, todolistId: string) => {
     return {type: "CHANGE-TASK-TITLE", taskId, title, todolistId} as const
@@ -136,6 +140,7 @@ export const fetchTasksThunkCreator = (todoId: string) => {
 
         todolistAPI.getTasks(todoId)
             .then((res)=> {
+                //@ts-ignore                                NEED TO CHECK!!!
                 dispatch(fetchTasksAC(todoId, res.data.items))
             }) 
     }
@@ -159,10 +164,38 @@ export const createTaskThunkCreator = (todoId: string, title: string) => {
 
         todolistAPI.createTask(todoId, title)
             .then( (res) => {
-                
+                // debugger
                 if (res.data.resultCode === 0){
-                    dispatch(addTaskAC(title, todoId))
+                    const task = res.data.data.item
+                    
+                    //@ts-ignore                                NEED TO CHECK!!!
+                    dispatch(addTaskAC(task))
                 }
+            })
+    }
+}
+
+export const updateTaskStatusThunkCreator = (todoId: string, taskId: string, status: TaskStatuses) => {
+    return (dispatch: Dispatch, getState: () => AppRootState ) => {
+
+        const state = getState();
+        const allTasks = state.tasks;
+        const allTasksForClickedTodo = allTasks[todoId]
+        const clickedTask = allTasksForClickedTodo.find( (t) => {
+            return t.id === taskId
+        }) 
+
+        const model: any = {...clickedTask, status}
+
+        todolistAPI.updateTask(todoId, taskId, model)
+            .then( (res) => {
+                // debugger
+                dispatch(changeTaskStatusAC(taskId, status, todoId))
+                //debugger
+                // if (res.data.resultCode === 0){
+                    
+                //     changeTaskStatusAC(taskId, status, todoId)
+                // }
             })
     }
 }

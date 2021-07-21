@@ -10,16 +10,16 @@ import { Delete } from '@material-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppRootState } from './Store/store';
 import { addTaskAC, changeTaskStatusAC, changeTaskTitleAC, createTaskThunkCreator, fetchTasksThunkCreator, removeTaskAC } from './Store/tasks-reducer';
-import { changeTodolistFilterAC, changeTodolistTitleAC } from './Store/todolists-reducer';
+import { changeTodolistFilterAC, changeTodolistTitleAC, updateTodoTitleThunkCreator } from './Store/todolists-reducer';
 import { Task } from './Components/Task/Task';
-import { TaskStatuses } from './api/todolist-api';
+import { TaskStatuses, TaskType } from './api/todolist-api';
 
-export type TaskType = {
-  todoListId: string;
-  id: string;
-  title: string;
-  status: TaskStatuses;
-};
+// export type TaskType = {
+//   todoListId: string;
+//   id: string;
+//   title: string;
+//   status: TaskStatuses;
+// };
 
 type PropsTypeTodolist = {
   todolistId: string; 
@@ -63,7 +63,9 @@ export const Todolist = React.memo((props: PropsTypeTodolist) => {
 
   const changeTodoListTileHandler = useCallback((newValue: string) => {
     //props.changeTodoListTitle(props.id, newValue)
-    dispatch(changeTodolistTitleAC(props.todolistId, newValue))
+    //dispatch(changeTodolistTitleAC(props.todolistId, newValue))
+    dispatch(updateTodoTitleThunkCreator(props.todolistId, newValue));
+
   }, [changeTodolistTitleAC, props.todolistId]);
 
   const addTask = useCallback((title: string) => {

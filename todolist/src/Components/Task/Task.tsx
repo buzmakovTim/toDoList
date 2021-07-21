@@ -1,17 +1,15 @@
 import React, {useCallback, ChangeEvent} from 'react'
 import { useDispatch } from 'react-redux';
-import { changeTaskStatusAC, changeTaskTitleAC, deleteTaskThunkCreator, removeTaskAC, updateTaskStatusThunkCreator } from '../../Store/tasks-reducer';
-import { TaskType } from '../../Todolist';
+import { changeTaskStatusAC, changeTaskTitleAC, deleteTaskThunkCreator, removeTaskAC, updateTaskStatusThunkCreator, updateTaskTitleTC } from '../../Store/tasks-reducer';
 import { EditableSpan } from '../EditableSpan/EditableSpan';
 import { Delete } from '@material-ui/icons';
 import { Button, Checkbox, IconButton } from '@material-ui/core';
 import style from './Task.module.css';
-import { TaskStatuses } from '../../api/todolist-api';
+import { TaskStatuses, TaskType } from '../../api/todolist-api';
 
 type TaskPropsType = {
     todolistId: string,
     task: TaskType
-  
   } 
   
 export const Task = React.memo((props: TaskPropsType) => {
@@ -20,7 +18,8 @@ export const Task = React.memo((props: TaskPropsType) => {
       const dispatch = useDispatch();  
   
       const onChangeTaskTitleHandler = useCallback((newValue: string) => {
-          dispatch(changeTaskTitleAC(props.task.id, newValue, props.todolistId))
+          //dispatch(changeTaskTitleAC(props.task.id, newValue, props.todolistId))
+          dispatch(updateTaskTitleTC(props.todolistId, props.task.id, newValue))
       }, [])
 
       const onChangeHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {

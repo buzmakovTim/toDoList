@@ -1,25 +1,20 @@
 import React, {useCallback, useEffect} from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { TaskType, Todolist } from './Todolist';
+import { Todolist } from './Todolist';
 import { v1 } from 'uuid';
 import { AddItemForm } from './Components/AddItemForm/AddItemForm';
 import { EditableSpan } from './Components/EditableSpan/EditableSpan';
 import { AppBar, Button, Grid, IconButton, Paper, Toolbar, Typography } from '@material-ui/core';
 import { Menu } from '@material-ui/icons';
-import { addTodolistAC, changeTodolistFilterAC, changeTodolistTitleAC, createTodolistThunkCreator, deleteTodolistThunkCreator, fetchTodolistsThunkCreator, removeTodolistAC, setTodoListsAC, todolistsReducer } from './Store/todolists-reducer';
+import { addTodolistAC, changeTodolistFilterAC, changeTodolistTitleAC, createTodolistThunkCreator, deleteTodolistThunkCreator, fetchTodolistsThunkCreator, removeTodolistAC, setTodoListsAC, TodolistDomainType, todolistsReducer } from './Store/todolists-reducer';
 import { addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer } from './Store/tasks-reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppRootState } from './Store/store';
-import { todolistAPI } from './api/todolist-api';
+import { TaskType, todolistAPI } from './api/todolist-api';
 
 export type FilterValueType = 'all' | 'completed' | 'active';
 
-export type TodoListType = {
-  id: string;
-  title: string;
-  filter: FilterValueType;
-}
 export type TasksStateType = {
   [key: string]: Array<TaskType>
 }
@@ -29,7 +24,7 @@ function AppWithRedux() {
   
 
   const dispatch = useDispatch();
-  const todoLists = useSelector<AppRootState, Array<TodoListType>>( state => state.todolist)
+  const todoLists = useSelector<AppRootState, Array<TodolistDomainType>>( state => state.todolist)
   
 
   // UseEffect Side effect

@@ -7,11 +7,14 @@ import { AddItemForm } from './Components/AddItemForm/AddItemForm';
 import { EditableSpan } from './Components/EditableSpan/EditableSpan';
 import { AppBar, Button, Grid, IconButton, Paper, Toolbar, Typography } from '@material-ui/core';
 import { Menu } from '@material-ui/icons';
-import { addTodolistAC, changeTodolistFilterAC, changeTodolistTitleAC, createTodolistThunkCreator, deleteTodolistThunkCreator, fetchTodolistsThunkCreator, removeTodolistAC, setTodoListsAC, TodolistDomainType, todolistsReducer } from './Store/todolists-reducer';
-import { addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer } from './Store/tasks-reducer';
+import { changeTodolistTitleAC, cnangeTodoListEntityStatus, createTodolistThunkCreator, deleteTodolistThunkCreator, fetchTodolistsThunkCreator, removeTodolistAC, setTodoListsAC, TodolistDomainType, todolistsReducer } from './Store/todolists-reducer';
+// import { addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer } from './Store/tasks-reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppRootState } from './Store/store';
 import { TaskType, todolistAPI } from './api/todolist-api';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import { RequestStatusType } from './Store/app-reducer';
+import { ErrorSnackbar } from './Components/ErrorSnackbar/errorSnackbar';
 
 export type FilterValueType = 'all' | 'completed' | 'active';
 
@@ -25,6 +28,7 @@ function AppWithRedux() {
 
   const dispatch = useDispatch();
   const todoLists = useSelector<AppRootState, Array<TodolistDomainType>>( state => state.todolist)
+  const status = useSelector<AppRootState, RequestStatusType>( state => state.app.status)
   
 
   // UseEffect Side effect
@@ -42,8 +46,6 @@ function AppWithRedux() {
   //remove todolist with useCallback
   const removeTodoList = useCallback((todoListId: string) => {
     
-    //const action = removeTodolistAC(todoListId)
-    //dispatch(action)
     dispatch(deleteTodolistThunkCreator(todoListId))
 
   }, [dispatch])
@@ -67,6 +69,7 @@ function AppWithRedux() {
                     filter={td.filter}            
                     removeTodoList={removeTodoList}
                     changeTodoListTitle={changeTodoListTitle}
+                    entityStatus={td.entityStatus}
                 />
           </Paper>
           </Grid>
@@ -88,61 +91,33 @@ function AppWithRedux() {
                              color={'inherit'}>
                      Login
                    </Button>  
+       
+       
+               
                </Toolbar>
+       
+       {/* Preloader */}
+       {status === 'loading' && <LinearProgress />}
+       {/* Preloader */}
        </AppBar> 
+  
+       
 
-       {/* <div className="Title"> */}
-         {/* <h3>Add NEW ToDoList</h3> */}
-
-         {/* <EditableSpan title={"Add NEW ToDoList"}/>  */}
 
            <Grid container style={{padding: '20px'}}>
               
-              <AddItemForm addItem={addToDolist} />
+              <AddItemForm addItem={addToDolist} disable={false}/>
            </Grid>
            <Grid container spacing={3} style={{padding: '20px'}}>
               {todoListsComponents}
            </Grid>
 
            
-       {/* </div> */}
-       {/* <div className="ToDoLists"> */}
+        {/* Erorr Snackbar */}
+        <ErrorSnackbar />
+        {/* Erorr Snackbar */}
+        
   </ div> )
-           {/* {todoLists.map( (td) => {
-
-//             let tasksForTodoList = tasksObj[td.id];
-//             if (td.filter === 'completed') {
-//               tasksForTodoList = tasksForTodoList.filter((t) => t.isDone === true);
-//             }
-//             if (td.filter === 'active') {
-//               tasksForTodoList = tasksForTodoList.filter((t) => t.isDone === false);
-//             } */}
-          
-//                   return ( <div> 
-                     
-//                   <Grid container>
-//                     <Todolist
-//                         key={td.id}
-//                         id={td.id}
-//                         title={td.title}
-//                         filter={td.filter}            
-//                         tasks={tasksForTodoList}
-//                         removeTask={removeTask}
-//                         addTask={addTask}
-//                         changeFilter={changeFilter}
-//                         changeStatus={changeStatus}
-//                         removeTodoList={removeTodoList}
-//                         changeTitle={changeTitle}
-//                         changeTodoListTitle={changeTodoListTitle}
-//                       />    
-//                   </Grid>    
-//                 </div>)
-//             } ) 
-//           }
-//       </div>
-
-
-//     </div>
-//   )
+           
 }
 export default AppWithRedux;

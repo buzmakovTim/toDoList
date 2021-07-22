@@ -58,11 +58,8 @@ export const Task = React.memo((props: TaskPropsType) => {
           X
         </button> */}
         <IconButton onClick={() => {
-            // props.removeTask(t.id, props.id);
-            //dispatch(removeTaskAC(props.task.id, props.todolistId))
             dispatch(deleteTaskThunkCreator(props.todolistId, props.task.id))
-
-          }}>
+        }}>
           <Delete/>
         </IconButton>
       </div>

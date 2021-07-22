@@ -9,6 +9,7 @@ import style from './AddItemForm.module.css'
 
 type AddItemPropsType = {
     addItem: (title: string) => void;
+    disable: boolean
 }
 
 export const AddItemForm = React.memo((props: AddItemPropsType) => {
@@ -49,6 +50,7 @@ export const AddItemForm = React.memo((props: AddItemPropsType) => {
             onKeyPress={onKeyPressAddTask}
             /> */}
           <TextField
+            disabled={props.disable}
             size={'small'}
             variant={'outlined'}
             error={error}
@@ -62,7 +64,7 @@ export const AddItemForm = React.memo((props: AddItemPropsType) => {
         {/* <button className={c.addTaskButton} onClick={addTaskOnClick}>
           +
         </button> */}
-        <IconButton onClick={addTaskOnClick} style={{width: '5px'}} color={'primary'}>
+        <IconButton disabled={props.disable} onClick={addTaskOnClick} style={{width: '5px'}} color={'primary'}>
           <AddBox 
             style={{marginLeft: '25px'}}
           />

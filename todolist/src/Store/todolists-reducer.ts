@@ -6,6 +6,9 @@ import { AppRootState } from './store';
 import { todolistAPI, TodoListType } from '../api/todolist-api';
 import { act } from 'react-dom/test-utils';
 import { AccessTimeOutlined } from '@material-ui/icons';
+import { RequestStatusType, setAppErrorAC, setAppStatusAC } from './app-reducer';
+import { AxiosError } from 'axios';
+import { handleServerAppError, handleServerNetworkError } from '../utils/error-utils';
 
 // Old way for types
 
@@ -40,13 +43,15 @@ type ActionsType =  |
                     AddTodolistActionType | 
                     ReturnType<typeof changeTodolistTitleAC> | 
                     ReturnType<typeof changeTodolistFilterAC> |
-                    SetTodoListActionType
+                    SetTodoListActionType |
+                    ReturnType<typeof cnangeTodoListEntityStatus>
 
 
 export type FilterValuesType = 'all' | 'active' | 'completed';
 
 export type TodolistDomainType = TodoListType & {
     filter: FilterValuesType;
+    entityStatus: RequestStatusType;
 }
 // Initial state empty array
 const initialState: Array<TodolistDomainType> = []
@@ -59,9 +64,8 @@ export const todolistsReducer = (state: Array<TodolistDomainType> = initialState
         case 'SET-TODOLISTS': {
             
             return action.todolists.map( (tl) => {
-                return {...tl, filter: 'all'}
+                return {...tl, filter: 'all', entityStatus: 'idle'}
             }) 
-            
         }
 
         case 'REMOVE-TODOLIST': {
@@ -69,9 +73,8 @@ export const todolistsReducer = (state: Array<TodolistDomainType> = initialState
         }
 
         case 'ADD-TODOLIST': {
-            
-            const stateCopy = [action.todolist, ...state]
-            return stateCopy
+
+            return [{...action.todolist, filter: 'all', entityStatus: 'idle'}, ...state]
         }
 
         case 'CHANGE-TODOLIST-TITLE': {
@@ -91,6 +94,11 @@ export const todolistsReducer = (state: Array<TodolistDomainType> = initialState
             }
             return [...state]
         }
+
+        case 'CHANGE-ENTITY-STATUS': {
+            return state.map( tl => tl.id === action.todolistId ? {...tl, filter: 'all', entityStatus: action.entityStatus} : tl)
+                //return {...tl, filter: 'all', entityStatus: tl.id === action.todolistId ? action.entityStatus : 'idle'}})
+        }
             
         default: 
             return state;
@@ -105,7 +113,7 @@ export const todolistsReducer = (state: Array<TodolistDomainType> = initialState
 export const removeTodolistAC = (todolistId: string) => {
     return {type: "REMOVE-TODOLIST", id: todolistId} as const
 }
-export const addTodolistAC = (todolist: TodolistDomainType) => {
+export const addTodolistAC = (todolist: TodoListType) => {
     return {type: "ADD-TODOLIST", todolist} as const
 }
 export const changeTodolistTitleAC = (todolistId: string, title: string) => {
@@ -117,6 +125,17 @@ export const changeTodolistFilterAC = (todolistId: string, filter: FilterValueTy
 export const setTodoListsAC = (todolists: Array<TodoListType>) => {
     return {type: "SET-TODOLISTS", todolists} as const
 }
+export const cnangeTodoListEntityStatus = (todolistId: string, entityStatus: RequestStatusType) => {
+    return {type: "CHANGE-ENTITY-STATUS" , todolistId, entityStatus} as const
+}
+
+
+// Response code from Server 
+enum ResponseStatuses {
+    success = 0,
+    error = 1,
+    captcha = 10
+}
 
 //
 //thunk creators
@@ -124,34 +143,49 @@ export const setTodoListsAC = (todolists: Array<TodoListType>) => {
 export const fetchTodolistsThunkCreator = () => (dispatch: Dispatch, getState: () => AppRootState) => {
 
     // 1 server requests
+    dispatch(setAppStatusAC('loading')) // Preloader ON
     todolistAPI.getTodos()
       .then( (res) => {
          
         // 2 dispatch actions
         dispatch(setTodoListsAC(res.data))
+        dispatch(setAppStatusAC('succeeded')) // Preloader OFF 
       } ) 
 }
+
 export const createTodolistThunkCreator = (title: string) => (dispatch: Dispatch) => {
 
+    dispatch(setAppStatusAC('loading')) // Preloader ON
     todolistAPI.createTodo(title)
         .then( (res) => {
-            // debugger
-            if (res.data.resultCode === 0){
+            //  debugger
+            if (res.data.resultCode === ResponseStatuses.success){
                 
                 const todo = res.data.data.item
-                //@ts-ignore
                 dispatch(addTodolistAC(todo))
+
+            } else {
+                handleServerAppError(dispatch, res.data) // Func from error-utils.ts
             }
         })
+        .catch( (err: AxiosError) => {
+            handleServerNetworkError(dispatch, err.message) // Func from error-utils.ts
+        })
+        
+
 }
 
 export const deleteTodolistThunkCreator = (todoId: string) => (dispatch: Dispatch) => {
 
+    dispatch(setAppStatusAC('loading')) // Preloader ON
+
+    dispatch(cnangeTodoListEntityStatus(todoId, 'loading')) // To disable the button after Delete has pressed
     todolistAPI.deleteTodo(todoId)
         .then( (res) => {
             // debugger
-            if (res.data.resultCode === 0){
+            if (res.data.resultCode === ResponseStatuses.success){
                 dispatch(removeTodolistAC(todoId))
+                dispatch(setAppStatusAC('succeeded')) // Preloader OFF 
             }
         })
 }
@@ -161,7 +195,7 @@ export const updateTodoTitleThunkCreator = (todoId: string, title: string) => (d
     todolistAPI.updateTodoTitle(todoId, title)
         .then( (res) => {
             // debugger
-            if (res.data.resultCode === 0){
+            if (res.data.resultCode === ResponseStatuses.success){
                 dispatch(changeTodolistTitleAC(todoId, title))
             }
         })

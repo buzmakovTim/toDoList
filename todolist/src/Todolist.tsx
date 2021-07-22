@@ -13,6 +13,7 @@ import { addTaskAC, changeTaskStatusAC, changeTaskTitleAC, createTaskThunkCreato
 import { changeTodolistFilterAC, changeTodolistTitleAC, updateTodoTitleThunkCreator } from './Store/todolists-reducer';
 import { Task } from './Components/Task/Task';
 import { TaskStatuses, TaskType } from './api/todolist-api';
+import { RequestStatusType } from './Store/app-reducer';
 
 // export type TaskType = {
 //   todoListId: string;
@@ -27,6 +28,7 @@ type PropsTypeTodolist = {
   filter: FilterValueType;
   changeTodoListTitle: (newTitle: string, todoListId: string) => void;
   removeTodoList: (id: string) => void;
+  entityStatus: RequestStatusType;
 };
 
 export const Todolist = React.memo((props: PropsTypeTodolist) => {
@@ -90,14 +92,17 @@ export const Todolist = React.memo((props: PropsTypeTodolist) => {
       
       <div className={c.titleDiv}>
         <EditableSpan title={props.title} onChangeTitle={changeTodoListTileHandler}/>
-        <IconButton onClick={removeTodoList}>
+        
+        {/* Delete Button */}
+        <IconButton onClick={removeTodoList} disabled={props.entityStatus === 'loading'}>
                   <Delete/>
-      </IconButton>
+        </IconButton>
+        
         {/* <h3 className={c.title}>{props.title}</h3> */}
       </div>
       
 
-      <AddItemForm addItem={addTask}/> 
+      <AddItemForm addItem={addTask} disable={props.entityStatus === 'loading'}/> 
       {/* addItem={props.addTask} todoListId={props.id}/> */}
 
       <div>

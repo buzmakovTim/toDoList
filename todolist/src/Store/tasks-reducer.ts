@@ -8,6 +8,7 @@ import  { Dispatch } from 'redux'
 import { AccessTimeOutlined } from '@material-ui/icons';
 import { AddTodolistActionType, RemoveTodolistActionType, SetTodoListActionType, } from './todolists-reducer';
 import { TaskStatuses, TaskType, todolistAPI, UpdateTaskModelType } from '../api/todolist-api';
+import { setAppErrorAC, setAppStatusAC } from './app-reducer';
 
 
 
@@ -148,11 +149,13 @@ export const fetchTasksThunkCreator = (todoId: string) => {
 export const deleteTaskThunkCreator = (todoId: string, taskId: string) => {
     return (dispatch: Dispatch) => {
 
+        dispatch(setAppStatusAC('loading'))
         todolistAPI.deleteTask(todoId, taskId)
             .then( (res) => {
                 
                 if (res.data.resultCode === 0){
                     dispatch(removeTaskAC(taskId, todoId))
+                    dispatch(setAppStatusAC('succeeded'))
                 }
             })
     }
@@ -161,6 +164,7 @@ export const deleteTaskThunkCreator = (todoId: string, taskId: string) => {
 export const createTaskThunkCreator = (todoId: string, title: string) => {
     return (dispatch: Dispatch) => {
 
+        dispatch(setAppStatusAC('loading'))
         todolistAPI.createTask(todoId, title)
             .then( (res) => {
                 // debugger
@@ -168,6 +172,15 @@ export const createTaskThunkCreator = (todoId: string, title: string) => {
                     const task = res.data.data.item
                     
                     dispatch(addTaskAC(task))
+                    dispatch(setAppStatusAC('succeeded'))
+                } else {
+                    // Check if message has any ite,s at all
+                    if(res.data.messages.length){
+                        dispatch(setAppErrorAC(res.data.messages[0]))    
+                    } else {
+                        dispatch(setAppErrorAC('Some error occurred'))    
+                    }
+                    dispatch(setAppStatusAC('failed'))
                 }
             })
     }
@@ -228,9 +241,11 @@ export const updateTaskTitleTC = (todoId: string, taskId: string, title: string)
                 deadline: clickedTask.deadline
             }
 
+            dispatch(setAppStatusAC('loading'))
             todolistAPI.updateTask(todoId, taskId, model)
             .then( (res) => {
                 dispatch(changeTaskTitleAC(taskId, title, todoId))
+                dispatch(setAppStatusAC('succeeded'))
             })
         }
     }

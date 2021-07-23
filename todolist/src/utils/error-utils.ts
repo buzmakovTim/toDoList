@@ -6,7 +6,7 @@ import {ResponseType} from './../api/todolist-api'
 export const handleServerNetworkError = (dispatch: Dispatch<ErrorActionsType>, message: string) => {
     
     dispatch(setAppErrorAC(message)) // Error Message to show 
-    dispatch(setAppStatusAC('failed')) // Preloader OFF
+    //dispatch(setAppStatusAC('failed')) // Preloader OFF
 
 }
 

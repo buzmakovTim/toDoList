@@ -4,17 +4,17 @@ import './App.css';
 import { Todolist } from './Todolist';
 import { v1 } from 'uuid';
 import { AddItemForm } from './Components/AddItemForm/AddItemForm';
-import { EditableSpan } from './Components/EditableSpan/EditableSpan';
 import { AppBar, Button, Grid, IconButton, Paper, Toolbar, Typography } from '@material-ui/core';
 import { Menu } from '@material-ui/icons';
-import { changeTodolistTitleAC, cnangeTodoListEntityStatus, createTodolistThunkCreator, deleteTodolistThunkCreator, fetchTodolistsThunkCreator, removeTodolistAC, setTodoListsAC, TodolistDomainType, todolistsReducer } from './Store/todolists-reducer';
-// import { addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer } from './Store/tasks-reducer';
+import { changeTodolistTitleAC, createTodolistThunkCreator, deleteTodolistThunkCreator, fetchTodolistsThunkCreator, removeTodolistAC, setTodoListsAC, TodolistDomainType, todolistsReducer } from './Store/todolists-reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppRootState } from './Store/store';
 import { TaskType, todolistAPI } from './api/todolist-api';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { RequestStatusType } from './Store/app-reducer';
 import { ErrorSnackbar } from './Components/ErrorSnackbar/errorSnackbar';
+import { Redirect, Route, Switch } from 'react-router-dom';
+import { Login } from './Components/Login/Login';
 
 export type FilterValueType = 'all' | 'completed' | 'active';
 
@@ -22,7 +22,7 @@ export type TasksStateType = {
   [key: string]: Array<TaskType>
 }
 
-function AppWithRedux() {
+function App() {
   console.log('App Called');
   
 
@@ -61,6 +61,7 @@ function AppWithRedux() {
   const todoListsComponents = todoLists.map( (td) => {
 
     return (
+          
           <Grid item key={td.id}>
               <Paper elevation={5} style={{padding: '20px'}}>
                 <Todolist
@@ -76,6 +77,23 @@ function AppWithRedux() {
     )
   })
 
+  const todoToShow = () => {
+    return (
+      <div>
+           <Grid container spacing={3} style={{padding: '20px'}}>
+
+           
+          <Grid container style={{padding: '20px'}}>  
+              <AddItemForm addItem={addToDolist} disable={false}/>
+          </Grid>
+                  
+                  {todoListsComponents}
+          
+          </Grid>
+      </div>
+    )
+  }
+
    return ( 
    <div className="App">
      
@@ -85,34 +103,30 @@ function AppWithRedux() {
                        <Menu />
                    </IconButton>
                    <Typography variant={'h6'}>
-                     TodoLists
+                      TodoLists
                    </Typography> 
                    <Button variant={'outlined'} 
                              color={'inherit'}>
                      Login
                    </Button>  
        
-       
-               
                </Toolbar>
        
        {/* Preloader */}
        {status === 'loading' && <LinearProgress />}
        {/* Preloader */}
        </AppBar> 
-  
-       
 
-
-           <Grid container style={{padding: '20px'}}>
+              {/* {todoListsComponents} */}
+              <Switch>
+                <Route path={'/login'} render={ () => <Login/> }/>
+                <Route exact path={'/'} render={ () => todoToShow() }/>
+                <Route path={'/404'} render={ () => <h1 style={{'textAlign': 'center', 'fontSize': '40px'}}> 404 page not found</h1> }/>
               
-              <AddItemForm addItem={addToDolist} disable={false}/>
-           </Grid>
-           <Grid container spacing={3} style={{padding: '20px'}}>
-              {todoListsComponents}
-           </Grid>
-
-           
+                <Redirect from={'*'} to={'/404'} />
+              </Switch>
+          
+ 
         {/* Erorr Snackbar */}
         <ErrorSnackbar />
         {/* Erorr Snackbar */}
@@ -120,4 +134,4 @@ function AppWithRedux() {
   </ div> )
            
 }
-export default AppWithRedux;
+export default App;

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 import { preProcessFile, StringMappingType } from 'typescript';
 import { v1 } from 'uuid';
-import { FilterValueType,  TasksStateType} from './AppWithRedux';
+import { FilterValueType,  TasksStateType} from './App';
 import { AddItemForm } from './Components/AddItemForm/AddItemForm';
 import c from './Todolist.module.css';
 import {EditableSpan} from './Components/EditableSpan/EditableSpan';

@@ -1,4 +1,4 @@
-import { FilterValueType } from './../AppWithRedux';
+import { FilterValueType } from '../App';
 import React from 'react';
 import { v1 } from 'uuid';
 import  { Dispatch } from 'redux'
@@ -146,10 +146,11 @@ export const fetchTodolistsThunkCreator = () => (dispatch: Dispatch, getState: (
     dispatch(setAppStatusAC('loading')) // Preloader ON
     todolistAPI.getTodos()
       .then( (res) => {
-         
+        
         // 2 dispatch actions
         dispatch(setTodoListsAC(res.data))
         dispatch(setAppStatusAC('succeeded')) // Preloader OFF 
+        
       } ) 
 }
 
@@ -158,11 +159,11 @@ export const createTodolistThunkCreator = (title: string) => (dispatch: Dispatch
     dispatch(setAppStatusAC('loading')) // Preloader ON
     todolistAPI.createTodo(title)
         .then( (res) => {
-            //  debugger
             if (res.data.resultCode === ResponseStatuses.success){
                 
                 const todo = res.data.data.item
                 dispatch(addTodolistAC(todo))
+                dispatch(setAppStatusAC('succeeded')) // Preloader OFF 
 
             } else {
                 handleServerAppError(dispatch, res.data) // Func from error-utils.ts
@@ -171,8 +172,6 @@ export const createTodolistThunkCreator = (title: string) => (dispatch: Dispatch
         .catch( (err: AxiosError) => {
             handleServerNetworkError(dispatch, err.message) // Func from error-utils.ts
         })
-        
-
 }
 
 export const deleteTodolistThunkCreator = (todoId: string) => (dispatch: Dispatch) => {
@@ -182,22 +181,42 @@ export const deleteTodolistThunkCreator = (todoId: string) => (dispatch: Dispatc
     dispatch(cnangeTodoListEntityStatus(todoId, 'loading')) // To disable the button after Delete has pressed
     todolistAPI.deleteTodo(todoId)
         .then( (res) => {
-            // debugger
             if (res.data.resultCode === ResponseStatuses.success){
+                
                 dispatch(removeTodolistAC(todoId))
-                dispatch(setAppStatusAC('succeeded')) // Preloader OFF 
+                dispatch(setAppStatusAC('succeeded')) // Preloader OFF  
+            
+            } else {
+                
+                handleServerAppError(dispatch, res.data) // Func from error-utils.ts
             }
+        })
+        .catch( (err: AxiosError) => {
+            
+            handleServerNetworkError(dispatch, err.message) // Func from error-utils.ts
         })
 }
 
 export const updateTodoTitleThunkCreator = (todoId: string, title: string) => (dispatch: Dispatch) => {
 
+    dispatch(setAppStatusAC('loading')) // Preloader ON
+
     todolistAPI.updateTodoTitle(todoId, title)
         .then( (res) => {
-            // debugger
+            
             if (res.data.resultCode === ResponseStatuses.success){
+                
                 dispatch(changeTodolistTitleAC(todoId, title))
+                dispatch(setAppStatusAC('succeeded')) // Preloader OFF
+
+            } else {
+                
+                handleServerAppError(dispatch, res.data) // Func from error-utils.ts
             }
+        })
+        .catch( (err: AxiosError) => {
+            
+            handleServerNetworkError(dispatch, err.message) // Func from error-utils.ts
         })
 }
 

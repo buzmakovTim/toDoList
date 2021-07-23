@@ -3,23 +3,24 @@ import ReactDOM from 'react-dom';
 import './index.css';
 
 import reportWebVitals from './reportWebVitals';
-
-import AppWithRedux from './AppWithRedux';
+import { HashRouter } from 'react-router-dom';
+import App from './App';
 import { Provider } from 'react-redux';
 import { store } from './Store/store';
 
 
 
 ReactDOM.render(
-  <React.StrictMode>
-    {/* <App /> */}
-    {/* <AppWithReducers /> */}
-    <Provider store={store}>
-        <AppWithRedux />
-    </Provider>
-    
+  <HashRouter>   
+      <React.StrictMode>
+        {/* <App /> */}
+        {/* <AppWithReducers /> */}
+        <Provider store={store}>
+            <App />
+        </Provider>
 
-  </React.StrictMode>,
+      </React.StrictMode>,
+  </HashRouter>,
   document.getElementById('root')
 );
 

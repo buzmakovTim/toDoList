@@ -1,7 +1,7 @@
 
 import { AppRootState } from './store';
 // import { TaskType } from './../Todolist';
-import { FilterValueType, TasksStateType } from '../AppWithRedux';
+import { FilterValueType, TasksStateType } from '../App';
 import React from 'react';
 import { v1 } from 'uuid';
 import  { Dispatch } from 'redux'
@@ -131,48 +131,55 @@ export const fetchTasksAC = (todoId: string, tasks: Array<TaskType>) => {
     return {type: 'SET-TUSKS', todoId, tasks} as const
 }
 
+
+// Response code from Server 
+enum ResponseStatuses {
+    success = 0,
+    error = 1,
+    captcha = 10
+}
 //
 //Thunk creator
 //
-export const fetchTasksThunkCreator = (todoId: string) => {
+export const fetchTasksThunkCreator = (todoId: string) => (dispatch: Dispatch) => {
 
-    return (dispatch: Dispatch) => {
-
+        dispatch(setAppStatusAC('loading')) // Preloader ON
+        
         todolistAPI.getTasks(todoId)
             .then((res)=> {
 
                 dispatch(fetchTasksAC(todoId, res.data.items))
-            }) 
-    }
+                dispatch(setAppStatusAC('succeeded')) // Preloader OFF 
+        }) 
+    
 }
 
-export const deleteTaskThunkCreator = (todoId: string, taskId: string) => {
-    return (dispatch: Dispatch) => {
+export const deleteTaskThunkCreator = (todoId: string, taskId: string) => (dispatch: Dispatch) => {
 
-        dispatch(setAppStatusAC('loading'))
+        dispatch(setAppStatusAC('loading')) // Preloader ON
+        
         todolistAPI.deleteTask(todoId, taskId)
             .then( (res) => {
                 
-                if (res.data.resultCode === 0){
+                if (res.data.resultCode === ResponseStatuses.success){
                     dispatch(removeTaskAC(taskId, todoId))
-                    dispatch(setAppStatusAC('succeeded'))
+                    dispatch(setAppStatusAC('succeeded')) // Preloader OFF
                 }
             })
-    }
 }
 
-export const createTaskThunkCreator = (todoId: string, title: string) => {
-    return (dispatch: Dispatch) => {
+export const createTaskThunkCreator = (todoId: string, title: string) => (dispatch: Dispatch) => {
 
-        dispatch(setAppStatusAC('loading'))
+        dispatch(setAppStatusAC('loading')) // Preloader ON
+        
         todolistAPI.createTask(todoId, title)
             .then( (res) => {
                 // debugger
-                if (res.data.resultCode === 0){
+                if (res.data.resultCode === ResponseStatuses.success){
                     const task = res.data.data.item
                     
                     dispatch(addTaskAC(task))
-                    dispatch(setAppStatusAC('succeeded'))
+                    dispatch(setAppStatusAC('succeeded')) // Preloader OFF
                 } else {
                     // Check if message has any ite,s at all
                     if(res.data.messages.length){
@@ -180,14 +187,14 @@ export const createTaskThunkCreator = (todoId: string, title: string) => {
                     } else {
                         dispatch(setAppErrorAC('Some error occurred'))    
                     }
-                    dispatch(setAppStatusAC('failed'))
+                    dispatch(setAppStatusAC('failed')) // Preloader OFF
                 }
             })
-    }
 }
 
-export const updateTaskStatusThunkCreator = (todoId: string, taskId: string, status: TaskStatuses) => {
-    return (dispatch: Dispatch, getState: () => AppRootState ) => {
+export const updateTaskStatusThunkCreator = (todoId: string, taskId: string, status: TaskStatuses) => (dispatch: Dispatch, getState: () => AppRootState ) => {
+
+        dispatch(setAppStatusAC('loading')) // Preloader ON
 
         const state = getState();
         const allTasks = state.tasks;
@@ -212,13 +219,14 @@ export const updateTaskStatusThunkCreator = (todoId: string, taskId: string, sta
             todolistAPI.updateTask(todoId, taskId, model)
             .then( (res) => {
                 dispatch(changeTaskStatusAC(taskId, status, todoId))
+                dispatch(setAppStatusAC('failed')) // Preloader OFF
             })
         }
-    }
 }
 
-export const updateTaskTitleTC = (todoId: string, taskId: string, title: string) => {
-    return (dispatch: Dispatch, getState: () => AppRootState ) => {
+export const updateTaskTitleTC = (todoId: string, taskId: string, title: string) => (dispatch: Dispatch, getState: () => AppRootState ) => {
+
+        dispatch(setAppStatusAC('loading')) // Preloader ON
 
         const state = getState();
         const allTasks = state.tasks;
@@ -226,8 +234,6 @@ export const updateTaskTitleTC = (todoId: string, taskId: string, title: string)
         const clickedTask = allTasksForClickedTodo.find( (t) => {
             return t.id === taskId
         }) 
-
-        //const model: any = {...clickedTask, status}
         
         if(clickedTask) {
 
@@ -241,12 +247,10 @@ export const updateTaskTitleTC = (todoId: string, taskId: string, title: string)
                 deadline: clickedTask.deadline
             }
 
-            dispatch(setAppStatusAC('loading'))
             todolistAPI.updateTask(todoId, taskId, model)
             .then( (res) => {
                 dispatch(changeTaskTitleAC(taskId, title, todoId))
-                dispatch(setAppStatusAC('succeeded'))
+                dispatch(setAppStatusAC('succeeded')) // Preloader OFF
             })
         }
-    }
 }

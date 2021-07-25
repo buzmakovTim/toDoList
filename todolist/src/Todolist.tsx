@@ -14,6 +14,7 @@ import { changeTodolistFilterAC, changeTodolistTitleAC, updateTodoTitleThunkCrea
 import { Task } from './Components/Task/Task';
 import { TaskStatuses, TaskType } from './api/todolist-api';
 import { RequestStatusType } from './Store/app-reducer';
+import { Redirect } from 'react-router-dom';
 
 // export type TaskType = {
 //   todoListId: string;
@@ -39,6 +40,7 @@ export const Todolist = React.memo((props: PropsTypeTodolist) => {
 
 
   useEffect(() => {
+    
     dispatch(fetchTasksThunkCreator(props.todolistId))
   }, [])
 
@@ -85,6 +87,7 @@ export const Todolist = React.memo((props: PropsTypeTodolist) => {
       tasksForTodoList = tasks.filter((t) => t.status === TaskStatuses.New);
     }
 
+    
 
   return (
     

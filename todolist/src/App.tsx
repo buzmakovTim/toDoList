@@ -11,10 +11,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppRootState } from './Store/store';
 import { TaskType, todolistAPI } from './api/todolist-api';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import { RequestStatusType } from './Store/app-reducer';
+import { initializeAppTC, RequestStatusType } from './Store/app-reducer';
 import { ErrorSnackbar } from './Components/ErrorSnackbar/errorSnackbar';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { Login } from './Components/Login/Login';
+import { CircularProgress } from '@material-ui/core';
+import { logoutTC } from './Store/auth-reducer';
 
 export type FilterValueType = 'all' | 'completed' | 'active';
 
@@ -29,14 +31,21 @@ function App() {
   const dispatch = useDispatch();
   const todoLists = useSelector<AppRootState, Array<TodolistDomainType>>( state => state.todolist)
   const status = useSelector<AppRootState, RequestStatusType>( state => state.app.status)
-  
+  const isLoggedIn = useSelector<AppRootState, boolean>(state => state.auth.isLoggedIn)
+  const isInitialized = useSelector<AppRootState, boolean>(state => state.app.isInitialized)
 
   // UseEffect Side effect
   useEffect(() => {
+    
+    dispatch(initializeAppTC());
+    // if(!isLoggedIn){
+    //     return;
+    // }
     //using thunk
     dispatch(fetchTodolistsThunkCreator());
   }, [])
 
+  
 
   // Change title with useCallback
   const changeTodoListTitle = useCallback((todoListId: string, newTitle: string) => {
@@ -57,6 +66,17 @@ function App() {
     dispatch(createTodolistThunkCreator(title))
   }, [dispatch]);
 
+  // Logout
+  const logoutHadler = useCallback( () => {
+      dispatch(logoutTC())
+  }, [dispatch])  
+
+  // Preloader showing before initialized 
+  if(!isInitialized){
+    return <div style={{'position': 'fixed', 'top': '49%', 'left': '49%'}}>
+      <CircularProgress />
+    </div>
+  }
 
   const todoListsComponents = todoLists.map( (td) => {
 
@@ -87,7 +107,7 @@ function App() {
               <AddItemForm addItem={addToDolist} disable={false}/>
           </Grid>
                   
-                  {todoListsComponents}
+          {!isLoggedIn ? <Redirect to={'/login'}/> : todoListsComponents}
           
           </Grid>
       </div>
@@ -105,10 +125,11 @@ function App() {
                    <Typography variant={'h6'}>
                       TodoLists
                    </Typography> 
+                   
+                   {isLoggedIn &&
                    <Button variant={'outlined'} 
-                             color={'inherit'}>
-                     Login
-                   </Button>  
+                             color={'inherit'}
+                             onClick={logoutHadler}>LOGOUT</Button>}
        
                </Toolbar>
        

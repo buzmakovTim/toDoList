@@ -140,7 +140,29 @@ export const todolistAPI = {
         //return instance.post(`todo-lists/${todolistId}/tasks/${taskId}`, model)
         return instance.put<ResponseType<TaskType>>(`todo-lists/${todolistId}/tasks/${taskId}`, model);
     }
+}
 
+export type LoginType = {
+    email: string
+    password: string
+    rememberMe: boolean
+    captcha?: string
+}
 
+export const authAPI = {
+
+    login(data: LoginType) {
+        const promise = instance.post<ResponseType<{userId: number}>>('auth/login', data);
+        return promise;
+    },
+    me() {
+        const promise = instance.get<ResponseType<{id: number, email: string, login: string}>>('auth/me');
+        return promise;
+    },
+    logout(){
+        const promise = instance.delete<ResponseType>('auth/login');
+        return promise;
+    }
+    
 }
 

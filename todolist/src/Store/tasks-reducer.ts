@@ -143,6 +143,7 @@ enum ResponseStatuses {
 //
 export const fetchTasksThunkCreator = (todoId: string) => (dispatch: Dispatch) => {
 
+        console.log('Fetching task!!! for: ' + todoId)
         dispatch(setAppStatusAC('loading')) // Preloader ON
         
         todolistAPI.getTasks(todoId)

@@ -25,7 +25,7 @@ export type TasksStateType = {
 }
 
 function App() {
-  console.log('App Called');
+  // console.log('App Called');
   
 
   const dispatch = useDispatch();
@@ -36,17 +36,17 @@ function App() {
 
   // UseEffect Side effect
   useEffect(() => {
-    
+  
     dispatch(initializeAppTC());
-    // if(!isLoggedIn){
-    //     return;
-    // }
+    // debugger
+    if(!isLoggedIn){ 
+        return;
+    }
     //using thunk
     dispatch(fetchTodolistsThunkCreator());
   }, [])
 
   
-
   // Change title with useCallback
   const changeTodoListTitle = useCallback((todoListId: string, newTitle: string) => {
     dispatch(changeTodolistTitleAC(todoListId, newTitle))

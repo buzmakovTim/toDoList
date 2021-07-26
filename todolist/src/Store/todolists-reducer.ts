@@ -141,7 +141,9 @@ export enum ResponseStatuses {
 //thunk creators
 //
 export const fetchTodolistsThunkCreator = () => (dispatch: Dispatch, getState: () => AppRootState) => {
-
+    
+    console.log('Fetching todos')
+    
     // 1 server requests
     dispatch(setAppStatusAC('loading')) // Preloader ON
     todolistAPI.getTodos()
@@ -151,7 +153,11 @@ export const fetchTodolistsThunkCreator = () => (dispatch: Dispatch, getState: (
         dispatch(setTodoListsAC(res.data))
         dispatch(setAppStatusAC('succeeded')) // Preloader OFF 
         
-      } ) 
+      })
+      .catch( (err: AxiosError) => {
+            
+        handleServerNetworkError(dispatch, err.message) // Func from error-utils.ts
+    })
 }
 
 export const createTodolistThunkCreator = (title: string) => (dispatch: Dispatch) => {
@@ -170,6 +176,7 @@ export const createTodolistThunkCreator = (title: string) => (dispatch: Dispatch
             }
         })
         .catch( (err: AxiosError) => {
+            
             handleServerNetworkError(dispatch, err.message) // Func from error-utils.ts
         })
 }

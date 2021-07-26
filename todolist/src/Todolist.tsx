@@ -34,15 +34,15 @@ type PropsTypeTodolist = {
 
 export const Todolist = React.memo((props: PropsTypeTodolist) => {
 
-  console.log('ToDolist Called')
+  // console.log('ToDolist Called')
   const tasks = useSelector<AppRootState, Array<TaskType>>( state => state.tasks[props.todolistId])
   const dispatch = useDispatch();
 
 
   useEffect(() => {
-    
+    // console.log('Task fetching!!!')
     dispatch(fetchTasksThunkCreator(props.todolistId))
-  }, [])
+  }, [dispatch])
 
 
   // Filter functions

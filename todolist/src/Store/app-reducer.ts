@@ -67,6 +67,7 @@ export const setIsInitialized = (isInitialized: boolean) => {
 //Thunk
 export const initializeAppTC = () => (dispatch: Dispatch) => {
 
+    console.log('App initializing!')
     dispatch(setAppStatusAC('loading')) // Preloader ON
     authAPI.me()
         .then((res) => {
@@ -76,7 +77,7 @@ export const initializeAppTC = () => (dispatch: Dispatch) => {
                 dispatch(setIsLoggedInAC(true))
                 
                 dispatch(setAppStatusAC('succeeded')) // Preloader OFF
-
+                
             } else {
                 
                 dispatch(setAppStatusAC('failed')) // Preloader OFF

@@ -1,19 +1,19 @@
 import React, { useCallback, useEffect } from 'react';
 import { preProcessFile, StringMappingType } from 'typescript';
 import { v1 } from 'uuid';
-import { FilterValueType,  TasksStateType} from './App';
-import { AddItemForm } from './Components/AddItemForm/AddItemForm';
+import { FilterValueType,  TasksStateType} from '../../App';
+import { AddItemForm } from '../AddItemForm/AddItemForm';
 import c from './Todolist.module.css';
-import {EditableSpan} from './Components/EditableSpan/EditableSpan';
+import {EditableSpan} from '../EditableSpan/EditableSpan';
 import { Button, Checkbox, IconButton } from '@material-ui/core';
 import { Delete } from '@material-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppRootState } from './Store/store';
-import { addTaskAC, changeTaskStatusAC, changeTaskTitleAC, createTaskThunkCreator, fetchTasksThunkCreator, removeTaskAC } from './Store/tasks-reducer';
-import { changeTodolistFilterAC, changeTodolistTitleAC, updateTodoTitleThunkCreator } from './Store/todolists-reducer';
-import { Task } from './Components/Task/Task';
-import { TaskStatuses, TaskType } from './api/todolist-api';
-import { RequestStatusType } from './Store/app-reducer';
+import { AppRootState } from '../../Store/store';
+import { addTaskAC, changeTaskStatusAC, changeTaskTitleAC, createTaskThunkCreator, fetchTasksThunkCreator, removeTaskAC } from '../../Store/tasks-reducer';
+import { changeTodolistFilterAC, changeTodolistTitleAC, updateTodoTitleThunkCreator } from '../../Store/todolists-reducer';
+import { Task } from '../Task/Task';
+import { TaskStatuses, TaskType } from '../../api/todolist-api';
+import { RequestStatusType } from '../../Store/app-reducer';
 import { Redirect } from 'react-router-dom';
 
 // export type TaskType = {

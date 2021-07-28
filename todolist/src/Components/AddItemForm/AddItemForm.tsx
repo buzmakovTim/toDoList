@@ -1,10 +1,10 @@
 import React, { useState, KeyboardEvent, ChangeEvent } from 'react';
-import { Button, IconButton, TextField } from '@material-ui/core';
-import c from '../../Todolist.module.css';
+import { IconButton, TextField } from '@material-ui/core';
+// import c from '../../Todolist.module.css';
 import { AddBox } from '@material-ui/icons';
-import { useDispatch } from 'react-redux';
-import { addTaskAC } from '../../Store/tasks-reducer';
-import { v1 } from 'uuid';
+// import { useDispatch } from 'react-redux';
+// import { addTaskAC } from '../../Store/tasks-reducer';
+// import { v1 } from 'uuid';
 import style from './AddItemForm.module.css'
 
 type AddItemPropsType = {
@@ -64,7 +64,9 @@ export const AddItemForm = React.memo((props: AddItemPropsType) => {
         {/* <button className={c.addTaskButton} onClick={addTaskOnClick}>
           +
         </button> */}
-        <IconButton disabled={props.disable} onClick={addTaskOnClick} style={{width: '5px'}} color={'primary'}>
+        <IconButton disabled={props.disable} 
+                    onClick={addTaskOnClick} 
+                    style={{width: '5px'}} color={'primary'}>
           <AddBox 
             style={{marginLeft: '25px'}}
           />

@@ -28,18 +28,16 @@ function TodolistsList() {
 
   const dispatch = useDispatch();
   const todoLists = useSelector<AppRootState, Array<TodolistDomainType>>( state => state.todolist)
-  //const status = useSelector<AppRootState, RequestStatusType>( state => state.app.status)
   const isLoggedIn = useSelector<AppRootState, boolean>(state => state.auth.isLoggedIn)
-  //const isInitialized = useSelector<AppRootState, boolean>(state => state.app.isInitialized)
+  
 
   // UseEffect Side effect
   useEffect(() => {
   
     dispatch(initializeAppTC());
-    // debugger
-    // if(!isLoggedIn){ 
-    //     return;
-    // }
+    if(!isLoggedIn){ 
+        return;
+    }
     
     dispatch(fetchTodolistsThunkCreator());
   }, [])
@@ -68,16 +66,9 @@ function TodolistsList() {
   }, [dispatch]);
 
   
-
   if(!isLoggedIn){ 
     return <Redirect to={'/login'}/>
   }
-  // Preloader showing before initialized 
-  // if(!isInitialized){
-  //   return <div style={{'position': 'fixed', 'top': '49%', 'left': '49%'}}>
-  //     <CircularProgress />
-  //   </div>
-  // }
   
 
    return <> 

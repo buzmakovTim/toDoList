@@ -75,7 +75,7 @@ export const initializeAppTC = () => (dispatch: Dispatch) => {
             if (res.data.resultCode === ResponseStatuses.success){
                 
                 dispatch(setIsLoggedInAC(true))
-                
+                dispatch(setIsInitialized(true))
                 dispatch(setAppStatusAC('succeeded')) // Preloader OFF
                 
             } else {

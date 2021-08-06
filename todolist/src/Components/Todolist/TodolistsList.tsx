@@ -30,19 +30,22 @@ function TodolistsList() {
   const todoLists = useSelector<AppRootState, Array<TodolistDomainType>>( state => state.todolist)
   //const status = useSelector<AppRootState, RequestStatusType>( state => state.app.status)
   const isLoggedIn = useSelector<AppRootState, boolean>(state => state.auth.isLoggedIn)
-  const isInitialized = useSelector<AppRootState, boolean>(state => state.app.isInitialized)
+  //const isInitialized = useSelector<AppRootState, boolean>(state => state.app.isInitialized)
 
   // UseEffect Side effect
   useEffect(() => {
   
     dispatch(initializeAppTC());
     // debugger
-    if(!isLoggedIn){ 
-        return;
-    }
+    // if(!isLoggedIn){ 
+    //     return;
+    // }
     
     dispatch(fetchTodolistsThunkCreator());
   }, [])
+
+  
+
 
   // Comment
   // Change title with useCallback
@@ -66,56 +69,19 @@ function TodolistsList() {
 
   
 
-  // Preloader showing before initialized 
-  if(!isInitialized){
-    return <div style={{'position': 'fixed', 'top': '49%', 'left': '49%'}}>
-      <CircularProgress />
-    </div>
+  if(!isLoggedIn){ 
+    return <Redirect to={'/login'}/>
   }
-
-  // const todoListsComponents = todoLists.map( (td) => {
-
-  //   return (
-          
-  //         <Grid item key={td.id}>
-  //             <Paper elevation={5} style={{padding: '20px'}}>
-  //               <Todolist
-  //                   todolistId={td.id}
-  //                   title={td.title}
-  //                   filter={td.filter}            
-  //                   removeTodoList={removeTodoList}
-  //                   changeTodoListTitle={changeTodoListTitle}
-  //                   entityStatus={td.entityStatus}
-  //               />
-  //         </Paper>
-  //         </Grid>
-  //   )
-  // })
-
-  // const todoToShow = () => {
-  //   return (
-  //     <div>
-  //          <Grid container spacing={3} style={{padding: '20px'}}>
-
-           
-  //         <Grid container style={{padding: '20px'}}>  
-  //             <AddItemForm addItem={addToDolist} disable={false}/>
-  //         </Grid>
-                  
-  //         {!isLoggedIn ? <Redirect to={'/login'}/> : todoListsComponents}
-          
-  //         </Grid>
-  //     </div>
-  //   )
+  // Preloader showing before initialized 
+  // if(!isInitialized){
+  //   return <div style={{'position': 'fixed', 'top': '49%', 'left': '49%'}}>
+  //     <CircularProgress />
+  //   </div>
   // }
+  
 
    return <> 
    
-     
-
-   
-
-           
           <Grid container style={{padding: '20px'}}>  
               <AddItemForm addItem={addToDolist} disable={false}/>
           </Grid>
@@ -143,36 +109,6 @@ function TodolistsList() {
             }
           </Grid>
 
-       {/* <AppBar position={'static'}>
-               <Toolbar style={{justifyContent: 'space-between'}}>
-                   <IconButton color={'inherit'}>
-                       <Menu />
-                   </IconButton>
-                   <Typography variant={'h6'}>
-                      TodoLists
-                   </Typography> 
-                   
-                   {isLoggedIn &&
-                   <Button variant={'outlined'} 
-                             color={'inherit'}
-                             onClick={logoutHadler}>LOGOUT</Button>}
-       
-               </Toolbar>
-       
-       {/* Preloader */}
-       {/* {status === 'loading' && <LinearProgress />}
-       {/* Preloader */}
-       {/* </AppBar>  */} 
-
-              {/* {todoListsComponents}
-              <Switch>
-                <Route path={'/login'} render={ () => <Login/> }/>
-                <Route exact path={'/'} render={ () => todoToShow() }/>
-                <Route path={'/404'} render={ () => <h1 style={{'textAlign': 'center', 'fontSize': '40px'}}> 404 page not found</h1> }/>
-              
-                <Redirect from={'*'} to={'/404'} />
-              </Switch> */}
-          
  
         {/* Erorr Snackbar */}
         <ErrorSnackbar />

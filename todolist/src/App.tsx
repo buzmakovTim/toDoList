@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 // import logo from './logo.svg';
 import './App.css';
 import { AppBar, Button, IconButton, Toolbar, Typography } from '@material-ui/core';
@@ -7,12 +7,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppRootState } from './Store/store';
 import { TaskType } from './api/todolist-api';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import { RequestStatusType } from './Store/app-reducer';
+import { initializeAppTC, RequestStatusType } from './Store/app-reducer';
 import { ErrorSnackbar } from './Components/ErrorSnackbar/errorSnackbar';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { Login } from './Components/Login/Login';
 import { logoutTC } from './Store/auth-reducer';
 import TodolistsList from './Components/Todolist/TodolistsList';
+import { CircularProgress } from '@material-ui/core';
 
 export type FilterValueType = 'all' | 'completed' | 'active';
 
@@ -26,12 +27,24 @@ function App() {
   const dispatch = useDispatch();
   const status = useSelector<AppRootState, RequestStatusType>( state => state.app.status)
   const isLoggedIn = useSelector<AppRootState, boolean>(state => state.auth.isLoggedIn)
+  const isInitialized = useSelector<AppRootState, boolean>(state => state.app.isInitialized)
 
     // Logout
   const logoutHadler = useCallback( () => {
     dispatch(logoutTC())
   }, [dispatch])  
 
+
+  useEffect(() => {
+    dispatch(initializeAppTC())
+  }, [])
+
+  // reloader showing before initialized 
+  if(!isInitialized){
+    return <div style={{'position': 'fixed', 'top': '49%', 'left': '49%'}}>
+      <CircularProgress />
+    </div>
+  }
 
 
    return ( 
@@ -60,8 +73,8 @@ function App() {
 
               {/* {todoListsComponents} */}
               <Switch>
-                <Route path={'/login'} render={ () => <Login/> }/>
                 <Route exact path={'/'} render={ () => <TodolistsList/> }/>
+                <Route path={'/login'} render={ () => <Login/> }/>
                 <Route path={'/404'} render={ () => <h1 style={{'textAlign': 'center', 'fontSize': '40px'}}> 404 page not found</h1> }/>
               
                 <Redirect from={'*'} to={'/404'} />

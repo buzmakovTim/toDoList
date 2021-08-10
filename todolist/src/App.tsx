@@ -40,6 +40,8 @@ function App() {
   }, [])
 
   // reloader showing before initialized 
+
+  // 
   if(!isInitialized){
     return <div style={{'position': 'fixed', 'top': '49%', 'left': '49%'}}>
       <CircularProgress />

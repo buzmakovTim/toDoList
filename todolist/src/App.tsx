@@ -83,8 +83,10 @@ function App() {
               </Switch>
           
  
+        {/* Comments */}
         {/* Erorr Snackbar */}
         <ErrorSnackbar />
+
         {/* Erorr Snackbar */}
         
   </ div> )

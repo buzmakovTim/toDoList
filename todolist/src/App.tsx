@@ -82,8 +82,6 @@ function App() {
                 <Redirect from={'*'} to={'/404'} />
               </Switch>
           
- 
-        {/* Comments */}
         {/* Erorr Snackbar */}
         <ErrorSnackbar />
 

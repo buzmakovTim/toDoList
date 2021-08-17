@@ -108,11 +108,14 @@ export const Login = () => {
                          label={'Remember me'} 
                          control={<Checkbox  {...formik.getFieldProps('rememberMe')}/>} 
                      /> 
-
-                     <Button className={s.loginButton}
+                    
+                    <div className={s.loginButton}>
+                    <Button
                              type={'submit'} 
                              variant={'contained'} 
                              color={'primary'}>Login</Button> 
+                    </div>
+                     
                  </FormGroup> 
         </form>
 

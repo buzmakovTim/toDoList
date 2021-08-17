@@ -1,18 +1,15 @@
 .loginContainer {
-    /* background-color: aquamarine; */
     height: 85vh;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 .form {
-    /* background-color: blueviolet; */
     display: flex;
     justify-content: center;
     align-items: center;
 }
 .loginButton {
-    background-color: blueviolet;
     margin: 0 auto;
     margin-top: 20px;
 }

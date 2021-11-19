@@ -10,7 +10,7 @@ import { ResponseStatuses } from './todolists-reducer';
  
 
 const initialState = { 
-   isLoggedIn: false 
+   isLoggedIn: false
 } 
 
 type InitialStateType = typeof initialState 
